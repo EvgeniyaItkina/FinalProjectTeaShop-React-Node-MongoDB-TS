@@ -1,4 +1,5 @@
-import { Schema, model, Document } from "mongoose";
+import { Schema, model, Document, Types } from "mongoose";
+import Product from "./productModel";
 
 // Интерфейс для типа данных пользователя
 export interface IUser extends Document {
@@ -8,11 +9,23 @@ export interface IUser extends Document {
   email: string;
   password: string;
   role: "user" | "admin"; // Допустимые значения для роли
+  favaoriteProducts: Types.ObjectId[];
+  basketItems: {
+    product: Types.ObjectId;
+    quantity: number;
+    price: number;
+  }[];
   createdAt: Date;
 }
 export const emailRegExp = new RegExp(
   "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}$"
 );
+
+const basketItem = new Schema({
+  product: { type: Schema.Types.ObjectId, ref: "Product", required: true },
+  quantity: { type: Number, required: true },
+  price: { type: Number, required: true },
+});
 
 // Схема пользователя
 const userSchema = new Schema<IUser>(
@@ -51,6 +64,11 @@ const userSchema = new Schema<IUser>(
       enum: ["user", "admin"],
       default: "user",
     },
+    favaoriteProducts: {
+      type: [Schema.Types.ObjectId],
+      ref: Product,
+    },
+    basketItems: [basketItem],
     createdAt: {
       type: Date,
       default: Date.now,

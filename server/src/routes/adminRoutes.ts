@@ -1,10 +1,19 @@
-import { Router, Request, Response } from "express";
+import { Router } from "express";
 import { authenticateToken } from "../middlewares/usersMiddleware";
 import { adminRole } from "../middlewares/adminMiddleware";
+import {
+  deleteUser,
+  getUsers,
+  createProduct,
+  deleteProduct,
+  editProduct,
+} from "../controllers/adminController";
 
 const router: Router = Router();
-router.post("/new-product", authenticateToken, adminRole, (req: Request, res: Response) => {
-    
-  });
+router.post("/create-product", authenticateToken, adminRole, createProduct);
+router.put("/edit-product", authenticateToken, adminRole, editProduct);
+router.delete("/delete-product", authenticateToken, adminRole, deleteProduct);
+router.delete("/delete-user", authenticateToken, adminRole, deleteUser);
+router.get("/get-users", authenticateToken, adminRole, getUsers);
 
 export default router;

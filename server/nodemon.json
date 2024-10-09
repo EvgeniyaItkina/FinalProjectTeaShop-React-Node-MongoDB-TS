@@ -3,5 +3,6 @@
         "src"
     ],
     "ext": "ts",
-    "exec": "ts-node-dev --respawn src/app.ts"
+    "delay": "500ms",
+    "exec": "ts-node-dev  src/app.ts"
 }

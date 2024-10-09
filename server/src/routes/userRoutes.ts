@@ -1,5 +1,9 @@
 import { Router, Request, Response } from "express";
-import { editUser, getUserData } from "../controllers/userController";
+import {
+  addItemToBasket,
+  editUser,
+  getMeData,
+} from "../controllers/userController";
 import {
   authenticateToken,
   RequestWithDecodedToken,
@@ -7,11 +11,18 @@ import {
 
 const router: Router = Router();
 
-router.get("/user-data", authenticateToken, (req: Request, res: Response) => {
-  getUserData(req as RequestWithDecodedToken, res);
+router.get("/me", authenticateToken, (req: Request, res: Response) => {
+  getMeData(req as RequestWithDecodedToken, res);
 });
 router.post("/edit-data", authenticateToken, (req: Request, res: Response) => {
   editUser(req as RequestWithDecodedToken, res);
 });
+router.post(
+  "/add-item-to-basket",
+  authenticateToken,
+  (req: Request, res: Response) => {
+    addItemToBasket(req as RequestWithDecodedToken, res);
+  }
+);
 
 export default router;

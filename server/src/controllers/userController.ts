@@ -2,6 +2,7 @@ import { Response } from "express";
 import User from "../models/userModel";
 import { RequestWithDecodedToken } from "../middlewares/usersMiddleware";
 import Joi from "joi";
+import Product from "../models/productModel";
 
 const schemaJoi = Joi.object({
   firstName: Joi.string().required(),
@@ -9,7 +10,7 @@ const schemaJoi = Joi.object({
   phone: Joi.string().required(),
 });
 
-export async function getUserData(req: RequestWithDecodedToken, res: Response) {
+export async function getMeData(req: RequestWithDecodedToken, res: Response) {
   try {
     const decoded = req.decoded;
 
@@ -48,6 +49,45 @@ export async function editUser(req: RequestWithDecodedToken, res: Response) {
     user.phone = value.phone;
     await user.save();
     res.send({ data: user });
+  } catch (error: any) {
+    res.status(400).send({ error: error.message });
+  }
+}
+
+export async function addItemToBasket(
+  req: RequestWithDecodedToken,
+  res: Response
+) {
+  try {
+    const decoded = req.decoded;
+    const { userId } = decoded;
+    const { productId, quantity } = req.body;
+    const user = await User.findOne({ _id: userId });
+    if (!user) {
+      res.status(404).send();
+      return;
+    }
+    const product = await Product.findOne({ _id: productId });
+    if (!product) {
+      res.status(404).send();
+      return;
+    }
+
+    const basket_item = user.basketItems?.find((item) => {
+      return item.product.toString() === productId;
+    });
+    if (basket_item) {
+      basket_item.quantity += quantity;
+      basket_item.price = product.price;
+    } else {
+      user.basketItems.push({
+        product: productId,
+        quantity,
+        price: product.price,
+      });
+    }
+    await user.save();
+    res.send({ error: 0, data: user });
   } catch (error: any) {
     res.status(400).send({ error: error.message });
   }
