@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "target": "ES2021", // Целевая версия JS
+    "module": "CommonJS", // Система модулей
+    "rootDir": "./src", // Корневая папка исходного кода
+    "outDir": "./dist", // Папка для компилированного кода
+    "strict": true, // Включает строгую проверку типов
+    "esModuleInterop": true, // Совместимость с модулями ES
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true
+  },
+  "include": ["src"], // Включаем папку src для компиляции
+  "exclude": ["node_modules"]
+}
