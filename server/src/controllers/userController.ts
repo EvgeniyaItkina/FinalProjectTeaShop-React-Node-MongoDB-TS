@@ -54,7 +54,28 @@ export async function editUser(req: RequestWithDecodedToken, res: Response) {
   }
 }
 
-export async function addItemToBasket(
+export async function addFavorite(req: RequestWithDecodedToken, res: Response) {
+  try {
+    const decoded = req.decoded;
+    const { userId } = decoded;
+    const { favaoriteProducts } = req.body;
+
+    const user = await User.findOne({ _id: userId });
+    if (!user) {
+      res.status(404).send();
+      return;
+    }
+
+    user.favaoriteProducts = favaoriteProducts;
+
+    await user.save();
+    res.send({ data: user });
+  } catch (error: any) {
+    res.status(400).send({ error: error.message });
+  }
+}
+
+export async function setQuantityItemToBasket(
   req: RequestWithDecodedToken,
   res: Response
 ) {
@@ -76,18 +97,29 @@ export async function addItemToBasket(
     const basket_item = user.basketItems?.find((item) => {
       return item.product.toString() === productId;
     });
-    if (basket_item) {
-      basket_item.quantity += quantity;
-      basket_item.price = product.price;
-    } else {
-      user.basketItems.push({
-        product: productId,
-        quantity,
-        price: product.price,
+    if (quantity === 0) {
+      // Remove item from basket
+      user.basketItems = user.basketItems?.filter((item) => {
+        return item.product.toString() !== productId;
       });
+      await user.save();
+      res.send({ error: 0, data: user });
+      return;
+    } else {
+      // Update quantity of item in basket
+      if (basket_item) {
+        basket_item.quantity = quantity;
+        basket_item.price = product.price;
+      } else {
+        user.basketItems.push({
+          product: productId,
+          quantity,
+          price: product.price,
+        });
+      }
+      await user.save();
+      res.send({ error: 0, data: user });
     }
-    await user.save();
-    res.send({ error: 0, data: user });
   } catch (error: any) {
     res.status(400).send({ error: error.message });
   }

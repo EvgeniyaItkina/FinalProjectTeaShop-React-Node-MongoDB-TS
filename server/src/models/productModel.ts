@@ -54,5 +54,7 @@ const productSchema = new Schema<IProduct>(
   }
 );
 const Product = model<IProduct>("Product", productSchema);
+productSchema.index({ ingredients: 1 }); // Create index for ingredients field in Product collection for faster search
+
 
 export default Product;

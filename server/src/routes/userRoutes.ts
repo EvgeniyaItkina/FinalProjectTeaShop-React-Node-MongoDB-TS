@@ -1,8 +1,9 @@
 import { Router, Request, Response } from "express";
 import {
-  addItemToBasket,
+  setQuantityItemToBasket,
   editUser,
   getMeData,
+  addFavorite,
 } from "../controllers/userController";
 import {
   authenticateToken,
@@ -18,10 +19,18 @@ router.post("/edit-data", authenticateToken, (req: Request, res: Response) => {
   editUser(req as RequestWithDecodedToken, res);
 });
 router.post(
-  "/add-item-to-basket",
+  "/set-item-quantuty-to-basket",
   authenticateToken,
   (req: Request, res: Response) => {
-    addItemToBasket(req as RequestWithDecodedToken, res);
+    setQuantityItemToBasket(req as RequestWithDecodedToken, res);
+  }
+);
+
+router.post(
+  "/set-user-favorite-products",
+  authenticateToken,
+  (req: Request, res: Response) => {
+    addFavorite(req as RequestWithDecodedToken, res);
   }
 );
 
