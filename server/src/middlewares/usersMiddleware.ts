@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
+import User from "../models/userModel";
 export interface RequestWithDecodedToken extends Request {
   decoded: {
     userId: string;
@@ -7,7 +8,7 @@ export interface RequestWithDecodedToken extends Request {
   };
 }
 
-export function authenticateToken(
+export async function authenticateToken(
   req: Request,
   res: Response,
   next: NextFunction
@@ -26,6 +27,12 @@ export function authenticateToken(
       role: "user" | "admin";
     };
     (req as RequestWithDecodedToken).decoded = decoded;
+    const user = await User.findOne({ _id: decoded.userId });
+
+    if (!user) {
+      res.status(401).send({ error: 1, description: "User not found" });
+      return;
+    }
 
     next();
   } catch (error: any) {

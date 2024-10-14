@@ -1,5 +1,5 @@
 import { Response } from "express";
-import User from "../models/userModel";
+import User, { IUser } from "../models/userModel";
 import { RequestWithDecodedToken } from "../middlewares/usersMiddleware";
 import Joi from "joi";
 import Product from "../models/productModel";
@@ -60,11 +60,7 @@ export async function addFavorite(req: RequestWithDecodedToken, res: Response) {
     const { userId } = decoded;
     const { favaoriteProducts } = req.body;
 
-    const user = await User.findOne({ _id: userId });
-    if (!user) {
-      res.status(404).send();
-      return;
-    }
+    const user = (await User.findOne({ _id: userId })) as IUser;
 
     user.favaoriteProducts = favaoriteProducts;
 
