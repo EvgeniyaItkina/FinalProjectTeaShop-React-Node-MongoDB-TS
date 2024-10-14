@@ -1,14 +1,12 @@
 import React from "react";
+import { TopHeader } from "../components/TopHeader/TopHeader";
 
 export const MainLayout: React.FC<{ children: JSX.Element }> = ({
   children,
 }) => {
   return (
     <div>
-      <header>
-        <h1>My App</h1>
-      </header>
-      <main>{children}</main>
+   <TopHeader/>
     </div>
   );
 };
