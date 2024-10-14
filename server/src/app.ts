@@ -5,6 +5,7 @@ import authRoutes from "./routes/authRoutes"; // пример подключен
 import userRoutes from "./routes/userRoutes";
 import productRoutes from "./routes/productRoutes";
 import { createAdmin } from "./tools/createAdmin";
+import adminRoutes from "./routes/adminRoutes";
 // import errorHandler from "./middlewares/errorHandler"; // глобальная обработка ошибок
 
 const app: Application = express();
@@ -24,4 +25,5 @@ app.use(express.json());
 // // Маршруты
 app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
+app.use("/api/admin", adminRoutes);
 app.use("/api/product", productRoutes);

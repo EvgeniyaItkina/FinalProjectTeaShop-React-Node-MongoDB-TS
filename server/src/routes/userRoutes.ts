@@ -19,7 +19,7 @@ router.post("/edit-data", authenticateToken, (req: Request, res: Response) => {
   editUser(req as RequestWithDecodedToken, res);
 });
 router.post(
-  "/set-item-quantuty-to-basket",
+  "/set-item-quantity-to-basket",
   authenticateToken,
   (req: Request, res: Response) => {
     setQuantityItemToBasket(req as RequestWithDecodedToken, res);
