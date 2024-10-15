@@ -6,6 +6,7 @@ import userRoutes from "./routes/userRoutes";
 import productRoutes from "./routes/productRoutes";
 import { createAdmin } from "./tools/createAdmin";
 import adminRoutes from "./routes/adminRoutes";
+import { seedProducts } from "./tools/seedProducts";
 // import errorHandler from "./middlewares/errorHandler"; // глобальная обработка ошибок
 
 const app: Application = express();
@@ -13,7 +14,8 @@ const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, async () => {
   await connectMongoose();
-  createAdmin();
+  await createAdmin();
+  await seedProducts();
   console.log(`Example app listening on port ${PORT}`);
 });
 

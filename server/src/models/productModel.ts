@@ -37,7 +37,6 @@ const productSchema = new Schema<IProduct>(
     },
     weight: {
       type: Number,
-      required: [true, "Weight is required"],
       trim: true,
     },
     image: {

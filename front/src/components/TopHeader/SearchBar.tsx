@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { Box } from "@mui/material";
+import { Box, SxProps, Theme } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 
-const SearchBar: React.FC = () => {
+const SearchBar = (prop: { sx: SxProps<Theme> | undefined }) => {
     const [searchQuery, setSearchQuery] = useState("");
 
     const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -16,9 +16,7 @@ const SearchBar: React.FC = () => {
     return (
         <Box
             component="form"
-            sx={{ "& .MuiTextField-root": { m: 1, width: "25ch" } }}
-            noValidate
-            autoComplete="off"
+            sx={prop.sx} noValidate autoComplete="off"
         >
             <div style={{ position: "relative" }}>
                 <SearchIcon style={{ position: "absolute", top: 7, left: 2, color: "black" }} />
@@ -27,6 +25,8 @@ const SearchBar: React.FC = () => {
                     style={{
                         height: "30px",
                         paddingLeft: "25px",
+                        width: "100%",
+                        boxSizing: "border-box",
                     }}
                     placeholder="Search"
                 />

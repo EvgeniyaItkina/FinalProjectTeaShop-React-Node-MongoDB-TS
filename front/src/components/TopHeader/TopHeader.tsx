@@ -2,24 +2,35 @@ import * as React from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import Menu from "@mui/material/Menu";
 import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
-import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
-import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import { ImageLogo } from "./ImageLogo";
 import SearchBar from "./SearchBar";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import { Badge, IconButton } from "@mui/material";
 
 const TEA_SHOP = "Tea Shop";
 
-const pages = ["Products", "Pricing", "Blog"];
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
+const pages = [
+    ["About", "/about", ""],
+    ["Login", "/login", "unauth"],
+    ["Registration", "/registration", "unauth"],
+    ["Profile", "/profile", "auth"],
+    ["Logout", "/", "auth"],
+    ["Basket", "/basket", "auth"],
+    ["Favorites", "/favorites", "auth"],
+    ["CRM", "/crm", "auth", "admin"],
+];
 
 export function TopHeader() {
+    const [authState, setAuthState] = React.useState<"unauth" | "auth">("auth");
+    const [isAdmin, setIsAdmin] = React.useState<"admin" | undefined>();
+    const [itemInBasket, setItemInBasket] = React.useState<number>(0);
+
     const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
         null
     );
@@ -66,7 +77,7 @@ export function TopHeader() {
                     >
                         {TEA_SHOP}
                     </Typography>
-                    <SearchBar />
+                    <SearchBar sx={{ display: { xs: "none", md: "flex" } }} />
 
                     <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
                         <IconButton
@@ -79,6 +90,7 @@ export function TopHeader() {
                         >
                             <MenuIcon />
                         </IconButton>
+
                         <Menu
                             id="menu-appbar"
                             anchorEl={anchorElNav}
@@ -95,17 +107,19 @@ export function TopHeader() {
                             onClose={handleCloseNavMenu}
                             sx={{ display: { xs: "block", md: "none" } }}
                         >
-                            {pages.map((page) => (
-                                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                                    <Typography sx={{ textAlign: "center" }}>{page}</Typography>
-                                </MenuItem>
-                            ))}
+                            {pages.map((page, index) => {
+                                if (page[2] === authState || page[2] === "")
+                                    return (
+                                        <MenuItem key={index} onClick={handleCloseNavMenu}>
+                                            <Typography sx={{ textAlign: "center" }}>
+                                                {page[0]}
+                                            </Typography>
+                                        </MenuItem>
+                                    );
+                            })}
                         </Menu>
                     </Box>
 
-                    <ImageLogo
-                        sx={{ display: { xs: "flex", md: "none", height: 40 }, mr: 1 }}
-                    />
                     <Typography
                         variant="h5"
                         noWrap
@@ -124,23 +138,23 @@ export function TopHeader() {
                     >
                         {TEA_SHOP}
                     </Typography>
+
                     <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-                        {pages.map((page) => (
-                            <Button
-                                key={page}
-                                onClick={handleCloseNavMenu}
-                                sx={{ my: 2, color: "white", display: "block" }}
-                            >
-                                {page}
-                            </Button>
-                        ))}
+                        {pages.map((page, index) => {
+                            if (page[2] === authState || page[2] === "")
+                                if (page[3] === isAdmin || page[3] === undefined)
+                                    return (
+                                        <Button
+                                            key={index}
+                                            onClick={handleCloseNavMenu}
+                                            sx={{ my: 2, color: "white", display: "block" }}
+                                        >
+                                            {page[0]}
+                                        </Button>
+                                    );
+                        })}
                     </Box>
                     <Box sx={{ flexGrow: 0 }}>
-                        <Tooltip title="Open settings">
-                            <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-                            </IconButton>
-                        </Tooltip>
                         <Menu
                             sx={{ mt: "45px" }}
                             id="menu-appbar"
@@ -156,18 +170,23 @@ export function TopHeader() {
                             }}
                             open={Boolean(anchorElUser)}
                             onClose={handleCloseUserMenu}
-                        >
-                            {settings.map((setting) => (
-                                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                                    <Typography sx={{ textAlign: "center" }}>
-                                        {setting}
-                                    </Typography>
-                                </MenuItem>
-                            ))}
-                        </Menu>
+                        ></Menu>
                     </Box>
+                    {authState === "auth" && (
+                        <IconButton color="inherit">
+                            {itemInBasket > 0 && (
+                                <Badge badgeContent={itemInBasket} color="secondary">
+                                    <ShoppingCartIcon />
+                                </Badge>
+                            )}
+                            {itemInBasket === 0 && <ShoppingCartIcon />}
+                        </IconButton>
+                    )}
                 </Toolbar>
             </Container>
+            <SearchBar
+                sx={{ padding: "10px", display: { md: "none", xl: "none" } }}
+            />
         </AppBar>
     );
 }
