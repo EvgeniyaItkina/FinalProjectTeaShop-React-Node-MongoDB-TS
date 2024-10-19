@@ -9,6 +9,7 @@ export interface IProduct extends Document {
   weight: number;
   image: string;
   createdAt: Date;
+  updatedAt: Date;
 }
 const productSchema = new Schema<IProduct>(
   {

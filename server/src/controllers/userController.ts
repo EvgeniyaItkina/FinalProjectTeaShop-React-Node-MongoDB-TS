@@ -19,7 +19,7 @@ export async function getMeData(req: RequestWithDecodedToken, res: Response) {
       res.status(404).send();
       return;
     }
-    res.send({ data: user });
+    res.send({ data: user, error: 0 });
   } catch (error: any) {
     res.status(400).send({ error: error.message });
   }
@@ -70,7 +70,6 @@ export async function addFavorite(req: RequestWithDecodedToken, res: Response) {
     res.status(400).send({ error: error.message });
   }
 }
-
 export async function setQuantityItemToBasket(
   req: RequestWithDecodedToken,
   res: Response

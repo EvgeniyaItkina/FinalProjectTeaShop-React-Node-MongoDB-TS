@@ -7,6 +7,7 @@ export default defineConfig({
   server: {
     proxy: {
       "/api": { target: "http://localhost:2024", changeOrigin: true },
+      "/image": { target: "http://localhost:2024", changeOrigin: true },
     },
   },
 });

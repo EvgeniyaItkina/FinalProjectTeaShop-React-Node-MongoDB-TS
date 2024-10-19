@@ -12,6 +12,7 @@ import { ImageLogo } from "./ImageLogo";
 import SearchBar from "./SearchBar";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { Badge, IconButton } from "@mui/material";
+import { useUserProducts } from "../../contexts/UserProductsContext";
 
 const TEA_SHOP = "Tea Shop";
 
@@ -27,7 +28,7 @@ const pages = [
 ];
 
 export function TopHeader() {
-    const [authState, setAuthState] = React.useState<"unauth" | "auth">("auth");
+    const [authState, setAuthState] = React.useState<"unauth" | "auth">("unauth");
     const [isAdmin, setIsAdmin] = React.useState<"admin" | undefined>();
     const [itemInBasket, setItemInBasket] = React.useState<number>(0);
 
@@ -37,6 +38,15 @@ export function TopHeader() {
     const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
         null
     );
+    const { user } = useUserProducts();
+    React.useEffect(() => {
+        if (user) {
+            setAuthState("auth");
+            if (user.role === "admin") {
+                setIsAdmin("admin");
+            }
+        }
+    }, [user]);
 
     const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElNav(event.currentTarget);

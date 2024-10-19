@@ -1,24 +1,25 @@
 import React, { createContext, useContext, useState, ReactNode } from "react";
+import { IUser } from "../type";
 
-// Определяем интерфейсы для данных пользователя и товаров
-interface User {
-  id: number;
+export interface IProduct {
   name: string;
-  email: string;
-}
-
-interface Product {
-  id: number;
-  name: string;
+  category: string;
+  subCategory: string;
+  ingredients: string[];
   price: number;
+  weight: number;
+  image: string;
+  createdAt: string;
+  updatedAt: string;
+  _id: string;
 }
 
 // Определяем типы для состояния контекста
 interface UserProductsContextType {
-  user: User | null;
-  products: Product[];
-  setUser: (user: User | null) => void;
-  setProducts: (products: Product[]) => void;
+  user: IUser | null;
+  products: IProduct[];
+  setUser: (user: IUser | null) => void;
+  setProducts: (products: IProduct[]) => void;
 }
 
 // Инициализируем контекст с дефолтным значением
@@ -30,8 +31,8 @@ const UserProductsContext = createContext<UserProductsContextType | undefined>(
 export const UserProductsProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
-  const [user, setUser] = useState<User | null>({id: 1, name: "John Doe", email: "sdsds"});
-  const [products, setProducts] = useState<Product[]>([]);
+  const [user, setUser] = useState<IUser | null>(null);
+  const [products, setProducts] = useState<IProduct[]>([]);
 
   return (
     <UserProductsContext.Provider

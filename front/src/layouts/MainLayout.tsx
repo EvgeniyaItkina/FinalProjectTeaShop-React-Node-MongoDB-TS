@@ -3,24 +3,24 @@ import { TopHeader } from "../components/TopHeader/TopHeader";
 import { Box, Grid2 } from "@mui/material";
 import { LeftMenu } from "../components/LeftMenu/LeftMenu";
 
-export const MainLayout: React.FC<{ children: JSX.Element }> = ({
-  children,
-}) => {
+export const MainLayout: React.FC<{
+  children: JSX.Element;
+  error?: string;
+}> = ({ children, error }) => {
   return (
-    <div>
-   <TopHeader/>
-   <Grid2 container spacing={0}>
+    <>
+      <TopHeader />
+      <Grid2 container spacing={0}>
         <Grid2 size={3} sx={{ display: { xs: "none", md: "block" } }}>
-          <Box sx={{ backgroundColor: "lightblue", padding: 2 }}>
-            <LeftMenu />
-          </Box>
+          <LeftMenu />
         </Grid2>
         <Grid2 size={{ md: 9, xs: 12 }}>
-          <Box sx={{ backgroundColor: "lightgreen", padding: 2 }}>
-            Правая колонка
+          <Box sx={{ padding: 2 }}>
+            {error && <Box sx={{ color: "red" }}>{error}</Box>}
+            {children}
           </Box>
         </Grid2>
       </Grid2>
-    </div>
+    </>
   );
 };

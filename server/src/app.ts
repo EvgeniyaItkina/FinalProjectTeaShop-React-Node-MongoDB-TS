@@ -7,6 +7,7 @@ import productRoutes from "./routes/productRoutes";
 import { createAdmin } from "./tools/createAdmin";
 import adminRoutes from "./routes/adminRoutes";
 import { seedProducts } from "./tools/seedProducts";
+import imagesRoute from "./routes/imagesRoute";
 // import errorHandler from "./middlewares/errorHandler"; // глобальная обработка ошибок
 
 const app: Application = express();
@@ -29,3 +30,5 @@ app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/product", productRoutes);
+app.use("/", imagesRoute);
+app.use(express.static("public"));
