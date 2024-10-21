@@ -25,3 +25,22 @@ export const getMe = async () => {
     return false;
   }
 };
+
+export const saveFavorites = async (favaoriteProducts: string[]) => {
+  const tokenStr = getToken();
+  if (!tokenStr) return false;
+
+  try {
+    const response = await axios.post<{ data: IUser; error: 0 }>(
+      "/api/user/set-user-favorite-products",
+      { favaoriteProducts },
+      {
+        headers: { Authorization: `Bearer ${tokenStr}` },
+      }
+    );
+    return response.data;
+  } catch (e) {
+    console.log(e);
+    return false;
+  }
+};

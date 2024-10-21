@@ -9,7 +9,11 @@ import { useMemo } from "react";
 import { useUserProducts } from "../../contexts/UserProductsContext";
 
 export const LeftMenu = () => {
-  const { products } = useUserProducts();
+  const { products,
+    setSelectedCategory,
+    setSubSelectedCategory,
+    selectedCategory,
+    subSelectedCategory, } = useUserProducts();
   const categoriesTree = useMemo(() => {
     const categories = products.map((product) => product.category);
     const uniqueCategories = [...new Set(categories)];
@@ -41,17 +45,57 @@ export const LeftMenu = () => {
               </ListSubheader>
             }
           >
+            <Box>
+              <ListItemButton
+                sx={{
+                  backgroundColor:
+                    !selectedCategory && !subSelectedCategory
+                      ? "lightgray"
+                      : "",
+                }}
+                onClick={() => {
+                  setSelectedCategory(undefined);
+                  setSubSelectedCategory(undefined);
+                }}
+              >
+                <ListItemText>All</ListItemText>
+              </ListItemButton>
+            </Box>
             {categoriesTree.map((category) => {
               return (
                 <Box key={category.category}>
-                  <ListItemButton key={category.category}>
+                  <ListItemButton key={category.category}
+                    sx={{
+                      backgroundColor:
+                        selectedCategory === category.category &&
+                        !subSelectedCategory
+                          ? "lightgray"
+                          : "",
+                    }}
+                    onClick={() => {
+                      setSelectedCategory(category.category);
+                      setSubSelectedCategory(undefined);
+                    }}
+                    >
                     <ListItemText>{category.category}</ListItemText>
                   </ListItemButton>
 
                   <List>
                     {category.subCategories.map((subCategory) => {
                       return (
-                        <ListItemButton sx={{ pl: 4 }} key={subCategory}>
+                        <ListItemButton sx={{
+                          pl: 4,
+                          backgroundColor:
+                            subSelectedCategory === subCategory
+                              ? "lightgray"
+                              : "",
+                        }}
+                        key={subCategory}
+                        onClick={() => {
+                          setSelectedCategory(category.category);
+                          setSubSelectedCategory(subCategory);
+                        }}
+                        >
                           <ListItemText
                             primaryTypographyProps={{ variant: "body2" }}
                           >

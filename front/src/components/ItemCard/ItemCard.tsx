@@ -38,8 +38,8 @@ export const ItemCard = (prop: {
 
         <Box sx={{ height: "100px", overflow: "auto" }}>
           <ul>
-            {item.ingredients.map((el) => {
-              return <li>{el}</li>;
+            {item.ingredients.map((el, index) => {
+              return <li key={index}>{el}</li>;
             })}
           </ul>
         </Box>
