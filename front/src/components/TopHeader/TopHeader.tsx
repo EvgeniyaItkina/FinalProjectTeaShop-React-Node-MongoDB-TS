@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useEffect, useMemo, useState }  from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -21,38 +21,44 @@ const pages = [
     ["Login", "/login", "unauth"],
     ["Registration", "/registration", "unauth"],
     ["Profile", "/profile", "auth"],
-    ["Logout", "/", "auth"],
-    ["Basket", "/basket", "auth"],
     ["Favorites", "/favorites", "auth"],
     ["CRM", "/crm", "auth", "admin"],
+    ["Logout", "/", "auth"],
 ];
 
 export function TopHeader() {
-    const [authState, setAuthState] = React.useState<"unauth" | "auth">("unauth");
-    const [isAdmin, setIsAdmin] = React.useState<"admin" | undefined>();
-    const [itemInBasket, setItemInBasket] = React.useState<number>(0);
+    const [authState, setAuthState] = useState<"unauth" | "auth">("unauth");
+    const [isAdmin, setIsAdmin] = useState<"admin" | undefined>();
 
-    const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
+    const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(
         null
     );
-    const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
+    const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(
         null
     );
     const { user } = useUserProducts();
-    React.useEffect(() => {
+    useEffect(() => {
         if (user) {
             setAuthState("auth");
             if (user.role === "admin") {
                 setIsAdmin("admin");
             }
-        }
+        }else {
+            setAuthState("unauth");
+            setIsAdmin(undefined);
+          }
     }, [user]);
+
+    const itemInBasket = useMemo(
+        () =>
+          !user
+            ? 0
+            : user?.basketItems.reduce((acc, item) => acc + item.quantity, 0),
+        [user]
+      );
 
     const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElNav(event.currentTarget);
-    };
-    const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
-        setAnchorElUser(event.currentTarget);
     };
 
     const handleCloseNavMenu = () => {

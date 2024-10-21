@@ -6,8 +6,18 @@ export const ItemRow = (prop: {
     item: IProduct;
     showActionsButtons: boolean;
     isFavorite: boolean;
+    onFavoriteChange: (item_id: string) => void;
+    onAddToBasket: (item_id: string) => void;
 }) => {
     const { item, isFavorite, showActionsButtons } = prop;
+
+    const onFavoriteClick = () => {
+        prop.onFavoriteChange(item._id);
+    };
+    const onAddToBasketClick = () => {
+        prop.onAddToBasket(item._id);
+    };
+
     return (
         <Box border={1} borderRadius={'5px'} padding={1}>
             <Grid2 container columnGap={1}>
@@ -34,9 +44,10 @@ export const ItemRow = (prop: {
                     {showActionsButtons && (
                         <Box display={"flex"} marginTop={"auto"}>
                             <Typography variant="body2">
-                                <Button variant="contained">Add to basket</Button>
+                                <Button onClick={onAddToBasketClick} variant="contained">Add to basket</Button>
                             </Typography>
                             <IconButton
+                                onClick={onFavoriteClick}
                                 aria-label="add-to-favorites"
                                 sx={{ color: isFavorite ? "red" : "" }}
                             >

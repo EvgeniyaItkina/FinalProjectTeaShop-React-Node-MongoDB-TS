@@ -14,7 +14,7 @@ export async function getMeData(req: RequestWithDecodedToken, res: Response) {
   try {
     const decoded = req.decoded;
 
-    const user = await User.findOne({ _id: decoded.userId });
+    const user = await User.findOne({ _id: decoded.userId }).populate('basketItems.product');
     if (!user) {
       res.status(404).send();
       return;
@@ -48,6 +48,7 @@ export async function editUser(req: RequestWithDecodedToken, res: Response) {
     user.lastName = value.lastName;
     user.phone = value.phone;
     await user.save();
+    await user.populate("basketItems.product");
     res.send({ data: user });
   } catch (error: any) {
     res.status(400).send({ error: error.message });
@@ -65,6 +66,7 @@ export async function addFavorite(req: RequestWithDecodedToken, res: Response) {
     user.favaoriteProducts = favaoriteProducts;
 
     await user.save();
+    await user.populate("basketItems.product");
     res.send({ data: user });
   } catch (error: any) {
     res.status(400).send({ error: error.message });
@@ -78,11 +80,8 @@ export async function setQuantityItemToBasket(
     const decoded = req.decoded;
     const { userId } = decoded;
     const { productId, quantity } = req.body;
-    const user = await User.findOne({ _id: userId });
-    if (!user) {
-      res.status(404).send();
-      return;
-    }
+    const user = await User.findOne({ _id: userId }) as IUser;
+    
     const product = await Product.findOne({ _id: productId });
     if (!product) {
       res.status(404).send();
@@ -98,6 +97,7 @@ export async function setQuantityItemToBasket(
         return item.product.toString() !== productId;
       });
       await user.save();
+      await user.populate("basketItems.product");
       res.send({ error: 0, data: user });
       return;
     } else {
@@ -113,6 +113,7 @@ export async function setQuantityItemToBasket(
         });
       }
       await user.save();
+      await user.populate("basketItems.product");
       res.send({ error: 0, data: user });
     }
   } catch (error: any) {

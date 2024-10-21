@@ -14,8 +14,18 @@ export const ItemCard = (prop: {
   item: IProduct;
   showActionsButtons: boolean;
   isFavorite: boolean;
+  onFavoriteChange: (item_id: string) => void;
+  onAddToBasket: (item_id: string) => void;
 }) => {
   const { item, isFavorite, showActionsButtons } = prop;
+  
+  const onFavoriteClick = () => {
+    prop.onFavoriteChange(item._id);
+  };
+  const onAddToBasketClick = () => {
+    prop.onAddToBasket(item._id);
+  };
+
   return (
     <Card sx={{ maxWidth: 345 }}>
       <CardHeader
@@ -52,10 +62,11 @@ export const ItemCard = (prop: {
         {showActionsButtons && (
           <Box display={"flex"} marginTop={1}>
             <Typography variant="body2">
-              <Button variant="contained">Add to basket</Button>
+              <Button onClick={onAddToBasketClick} variant="contained">Add to basket</Button>
             </Typography>
             <IconButton
               aria-label="add-to-favorites"
+              onClick={onFavoriteClick}
               sx={{ color: isFavorite ? "red" : "", marginLeft: "auto" }}
             >
               <FavoriteIcon />

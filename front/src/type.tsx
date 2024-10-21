@@ -6,7 +6,10 @@ export interface IUser extends Document {
     role: "user" | "admin";
     favaoriteProducts: string[];
     basketItems: {
-        product: string;
+        product: {
+            _id: string;
+            name: string;
+          };
         quantity: number;
         price: number;
     }[];
