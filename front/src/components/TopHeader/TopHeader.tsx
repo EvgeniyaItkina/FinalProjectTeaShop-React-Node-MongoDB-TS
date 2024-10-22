@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState }  from "react";
+import { useEffect, useMemo, useState } from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -13,6 +13,7 @@ import SearchBar from "./SearchBar";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { Badge, IconButton } from "@mui/material";
 import { useUserProducts } from "../../contexts/UserProductsContext";
+import { Link } from "react-router-dom";
 
 const TEA_SHOP = "Tea Shop";
 
@@ -30,12 +31,8 @@ export function TopHeader() {
     const [authState, setAuthState] = useState<"unauth" | "auth">("unauth");
     const [isAdmin, setIsAdmin] = useState<"admin" | undefined>();
 
-    const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(
-        null
-    );
-    const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(
-        null
-    );
+    const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
+    const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
     const { user } = useUserProducts();
     useEffect(() => {
         if (user) {
@@ -43,19 +40,19 @@ export function TopHeader() {
             if (user.role === "admin") {
                 setIsAdmin("admin");
             }
-        }else {
+        } else {
             setAuthState("unauth");
             setIsAdmin(undefined);
-          }
+        }
     }, [user]);
 
     const itemInBasket = useMemo(
         () =>
-          !user
-            ? 0
-            : user?.basketItems.reduce((acc, item) => acc + item.quantity, 0),
+            !user
+                ? 0
+                : user?.basketItems.reduce((acc, item) => acc + item.quantity, 0),
         [user]
-      );
+    );
 
     const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElNav(event.currentTarget);
@@ -79,8 +76,8 @@ export function TopHeader() {
                     <Typography
                         variant="h6"
                         noWrap
-                        component="a"
-                        href="#app-bar-with-responsive-menu"
+                        to="/"
+                        component={Link}
                         sx={{
                             mr: 2,
                             display: { xs: "none", md: "flex" },
@@ -127,9 +124,13 @@ export function TopHeader() {
                                 if (page[2] === authState || page[2] === "")
                                     return (
                                         <MenuItem key={index} onClick={handleCloseNavMenu}>
-                                            <Typography sx={{ textAlign: "center" }}>
+                                            <Button
+                                                to={page[1]}
+                                                component={Link}
+                                                sx={{ textAlign: "center" }}
+                                            >
                                                 {page[0]}
-                                            </Typography>
+                                            </Button>
                                         </MenuItem>
                                     );
                             })}
@@ -139,8 +140,8 @@ export function TopHeader() {
                     <Typography
                         variant="h5"
                         noWrap
-                        component="a"
-                        href="#app-bar-with-responsive-menu"
+                        component={Link}
+                        to="/"
                         sx={{
                             mr: 2,
                             display: { xs: "flex", md: "none" },
@@ -162,6 +163,8 @@ export function TopHeader() {
                                     return (
                                         <Button
                                             key={index}
+                                            to={page[1]}
+                                            component={Link}
                                             onClick={handleCloseNavMenu}
                                             sx={{ my: 2, color: "white", display: "block" }}
                                         >

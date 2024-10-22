@@ -7,6 +7,7 @@ import {
 } from "@mui/material";
 import { useMemo } from "react";
 import { useUserProducts } from "../../contexts/UserProductsContext";
+import { useNavigate } from "react-router-dom";
 
 export const LeftMenu = () => {
   const { products,
@@ -14,6 +15,7 @@ export const LeftMenu = () => {
     setSubSelectedCategory,
     selectedCategory,
     subSelectedCategory, } = useUserProducts();
+    const navigate = useNavigate();
   const categoriesTree = useMemo(() => {
     const categories = products.map((product) => product.category);
     const uniqueCategories = [...new Set(categories)];
@@ -75,6 +77,7 @@ export const LeftMenu = () => {
                     onClick={() => {
                       setSelectedCategory(category.category);
                       setSubSelectedCategory(undefined);
+                      navigate("/");
                     }}
                     >
                     <ListItemText>{category.category}</ListItemText>
@@ -94,6 +97,7 @@ export const LeftMenu = () => {
                         onClick={() => {
                           setSelectedCategory(category.category);
                           setSubSelectedCategory(subCategory);
+                          navigate("/");
                         }}
                         >
                           <ListItemText

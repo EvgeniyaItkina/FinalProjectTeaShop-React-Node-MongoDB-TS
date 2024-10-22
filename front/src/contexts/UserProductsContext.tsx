@@ -24,6 +24,8 @@ interface UserProductsContextType {
   setSelectedCategory: (category: string | undefined) => void;
   subSelectedCategory: string | undefined;
   setSubSelectedCategory: (category: string | undefined) => void;
+  serchValue: string;
+  setSearchValue: (value: string) => void;
 }
 
 // Инициализируем контекст с дефолтным значением
@@ -37,20 +39,23 @@ export const UserProductsProvider: React.FC<{ children: ReactNode }> = ({
 }) => {
   const [user, setUser] = useState<IUser | null>(null);
   const [products, setProducts] = useState<IProduct[]>([]);
-const [selectedCategory, setSelectedCategory] = useState<string | undefined>();
-const [subSelectedCategory, setSubSelectedCategory] = useState<string | undefined>();
+  const [selectedCategory, setSelectedCategory] = useState<string | undefined>();
+  const [subSelectedCategory, setSubSelectedCategory] = useState<string | undefined>();
+  const [serchValue, setSearchValue] = useState<string>("");
   return (
     <UserProductsContext.Provider
-    value={{
-      user,
-      products,
-      setUser,
-      setProducts,
-      selectedCategory,
-      setSelectedCategory,
-      subSelectedCategory,
-      setSubSelectedCategory,
-    }}    >
+      value={{
+        user,
+        products,
+        setUser,
+        setProducts,
+        selectedCategory,
+        setSelectedCategory,
+        subSelectedCategory,
+        setSubSelectedCategory,
+        serchValue,
+        setSearchValue,
+      }}    >
       {children}
     </UserProductsContext.Provider>
   );

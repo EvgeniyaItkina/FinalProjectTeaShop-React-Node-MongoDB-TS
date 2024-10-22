@@ -1,25 +1,16 @@
-import React, { useState } from "react";
 import { Box, SxProps, Theme } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
+import { useUserProducts } from "../../contexts/UserProductsContext";
 
 const SearchBar = (prop: { sx: SxProps<Theme> | undefined }) => {
-    const [searchQuery, setSearchQuery] = useState("");
-
-    const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setSearchQuery(event.target.value);
-    };
-
-    const handleClearSearch = () => {
-        setSearchQuery("");
-    };
+    const { serchValue, setSearchValue } = useUserProducts();
 
     return (
-        <Box
-            component="form"
-            sx={prop.sx} noValidate autoComplete="off"
-        >
+        <Box component="form" sx={prop.sx} noValidate autoComplete="off">
             <div style={{ position: "relative" }}>
-                <SearchIcon style={{ position: "absolute", top: 7, left: 2, color: "black" }} />
+                <SearchIcon
+                    style={{ position: "absolute", top: 4, left: 2, color: "black" }}
+                />
                 <input
                     type="text"
                     style={{
@@ -28,6 +19,8 @@ const SearchBar = (prop: { sx: SxProps<Theme> | undefined }) => {
                         width: "100%",
                         boxSizing: "border-box",
                     }}
+                    value={serchValue}
+                    onChange={(e) => setSearchValue(e.target.value)}
                     placeholder="Search"
                 />
             </div>

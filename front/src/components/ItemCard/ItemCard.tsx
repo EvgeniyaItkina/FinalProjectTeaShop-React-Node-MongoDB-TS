@@ -7,8 +7,9 @@ import {
   IconButton,
   Typography,
 } from "@mui/material";
-import FavoriteIcon from "@mui/icons-material/Favorite";
 import { IProduct } from "../../contexts/UserProductsContext";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import { Link } from "react-router-dom";
 
 export const ItemCard = (prop: {
   item: IProduct;
@@ -27,7 +28,7 @@ export const ItemCard = (prop: {
   };
 
   return (
-    <Card sx={{ maxWidth: 345 }}>
+    <Card sx={{ maxWidth: 345 }} to={"/product/" + item._id} component={Link}>
       <CardHeader
         sx={{ textAlign: "center" }}
         title={<Typography variant="h6">{item.name}</Typography>}
