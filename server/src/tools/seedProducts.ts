@@ -9,7 +9,7 @@ const data = [
         ingredients: ["Black Tea"],
         price: 15.99,
         weight: 250,
-        image: "english_breakfast.jpg",
+        image: "tea.jpg",
     },
     {
         name: "Earl Grey",
@@ -18,7 +18,7 @@ const data = [
         ingredients: ["Black Tea", "Bergamot"],
         price: 18.99,
         weight: 200,
-        image: "earl_grey.jpg",
+        image: "tea.jpg",
     },
     {
         name: "Oolong Tea",
@@ -27,7 +27,7 @@ const data = [
         ingredients: ["Oolong Tea"],
         price: 25.99,
         weight: 100,
-        image: "oolong_tea.jpg",
+        image: "tea.jpg",
     },
     {
         name: "Jasmine Green Tea",
@@ -36,7 +36,7 @@ const data = [
         ingredients: ["Green Tea", "Jasmine Flowers"],
         price: 20.99,
         weight: 150,
-        image: "jasmine_green_tea.jpg",
+        image: "tea.jpg",
     },
     {
         name: "Relaxing Herbal Mix",
@@ -45,7 +45,7 @@ const data = [
         ingredients: ["Chamomile", "Peppermint", "Lavender"],
         price: 12.99,
         weight: 50,
-        image: "relaxing_herbal_mix.jpg",
+        image: "tea.jpg",
     },
     {
         name: "Detox Tea",
@@ -54,7 +54,7 @@ const data = [
         ingredients: ["Dandelion", "Green Tea", "Lemon Balm"],
         price: 16.99,
         weight: 75,
-        image: "detox_tea.jpg",
+        image: "tea.jpg",
     },
     {
         name: "Fruit Infusion",
@@ -63,7 +63,7 @@ const data = [
         ingredients: ["Hibiscus", "Apple", "Rosehip"],
         price: 14.99,
         weight: 100,
-        image: "fruit_infusion.jpg",
+        image: "tea.jpg",
     },
     {
         name: "Rooibos Tea",
@@ -72,7 +72,7 @@ const data = [
         ingredients: ["Rooibos"],
         price: 17.99,
         weight: 120,
-        image: "rooibos_tea.jpg",
+        image: "tea.jpg",
     },
 
     // Category: Tea accessories
@@ -83,7 +83,7 @@ const data = [
         ingredients: [],
         price: 45.99,
         weight: 500,
-        image: "porcelain_teapot.jpg",
+        image: "teapot.jpg",
     },
     {
         name: "Glass Teapot with Infuser",
@@ -92,7 +92,7 @@ const data = [
         ingredients: [],
         price: 29.99,
         weight: 400,
-        image: "glass_teapot.jpg",
+        image: "teapot.jpg",
     },
     {
         name: "Ceramic Tea Cups Set",
@@ -101,7 +101,7 @@ const data = [
         ingredients: [],
         price: 24.99,
         weight: 300,
-        image: "ceramic_cups_set.jpg",
+        image: "tea-cup.jpg",
     },
     {
         name: "Bamboo Tea Tray",
@@ -130,7 +130,7 @@ const data = [
         ingredients: ["Strawberries", "Sugar", "Lemon Juice"],
         price: 8.99,
         weight: 350,
-        image: "strawberry_jam.jpg",
+        image: "jam.jpg",
     },
     {
         name: "Apricot Jam",
@@ -139,7 +139,7 @@ const data = [
         ingredients: ["Apricots", "Sugar", "Pectin"],
         price: 9.49,
         weight: 400,
-        image: "apricot_jam.jpg",
+        image: "jam.jpg",
     },
     {
         name: "Blueberry Jam",
@@ -148,7 +148,7 @@ const data = [
         ingredients: ["Blueberries", "Sugar", "Lemon Juice"],
         price: 10.99,
         weight: 320,
-        image: "blueberry_jam.jpg",
+        image: "jam.jpg",
     },
 
     // Category: Tea procedures
@@ -159,7 +159,7 @@ const data = [
         ingredients: [],
         price: 60.00,
         weight: 0,
-        image: "chinese_tea_ceremony.jpg",
+        image: "tea-procedures.jpg",
     },
     {
         name: "English Afternoon Tea Experience",
@@ -168,7 +168,7 @@ const data = [
         ingredients: [],
         price: 55.00,
         weight: 0,
-        image: "english_afternoon_tea.jpg",
+        image: "english-tea-procedures.jpg",
     },
 ];
 

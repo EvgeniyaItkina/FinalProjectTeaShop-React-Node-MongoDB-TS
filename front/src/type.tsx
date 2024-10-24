@@ -1,3 +1,12 @@
+export type BasketItem = {
+    product: {
+      _id: string;
+      name: string;
+    };
+    quantity: number;
+    price: number;
+  };
+
 export interface IUser extends Document {
     firstName: string;
     lastName: string;
@@ -5,13 +14,6 @@ export interface IUser extends Document {
     email: string;
     role: "user" | "admin";
     favaoriteProducts: string[];
-    basketItems: {
-        product: {
-            _id: string;
-            name: string;
-          };
-        quantity: number;
-        price: number;
-    }[];
+    basketItems: BasketItem[];
     createdAt: Date;
 }

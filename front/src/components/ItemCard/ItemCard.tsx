@@ -10,13 +10,17 @@ import {
 import { IProduct } from "../../contexts/UserProductsContext";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { Link } from "react-router-dom";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 export const ItemCard = (prop: {
   item: IProduct;
   showActionsButtons: boolean;
   isFavorite: boolean;
+  isAdmin: boolean;
   onFavoriteChange: (item_id: string) => void;
   onAddToBasket: (item_id: string) => void;
+  maxWidth?: number | string;
 }) => {
   const { item, isFavorite, showActionsButtons } = prop;
   
@@ -28,13 +32,18 @@ export const ItemCard = (prop: {
   };
 
   return (
-    <Card sx={{ maxWidth: 345 }} to={"/product/" + item._id} component={Link}>
+    <Card sx={{ maxWidth: prop.maxWidth ? prop.maxWidth : 345 }}>
       <CardHeader
+      to={"/product/" + item._id}
         sx={{ textAlign: "center" }}
         title={<Typography variant="h6">{item.name}</Typography>}
       />
       <CardContent>
-        <Box sx={{ height: "250px" }}>
+        <Box sx={{ height: "250px" }}
+          to={"/product/" + item._id}
+          component={Link}
+          display={"block"}
+          >
           <img
             style={{
               maxWidth: "100%",
@@ -65,6 +74,16 @@ export const ItemCard = (prop: {
             <Typography variant="body2">
               <Button onClick={onAddToBasketClick} variant="contained">Add to basket</Button>
             </Typography>
+            {prop.isAdmin && (
+              <>
+                <IconButton sx={{ marginLeft: "auto" }}>
+                  <EditIcon />
+                </IconButton>
+                <IconButton sx={{ marginLeft: "auto" }}>
+                  <DeleteIcon />
+                </IconButton>
+              </>
+            )}
             <IconButton
               aria-label="add-to-favorites"
               onClick={onFavoriteClick}

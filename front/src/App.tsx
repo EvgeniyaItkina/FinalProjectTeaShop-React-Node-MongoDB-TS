@@ -5,6 +5,8 @@ import { getAllProducts, getMe } from "./api";
 import { useUserProducts } from "./contexts/UserProductsContext";
 import { Favorites } from "./pages/Favorites";
 import { Product } from "./pages/Product";
+import { Basket } from "./pages/Basket";
+import { Login } from "./pages/Login";
 
 const router = createBrowserRouter([
   {
@@ -18,6 +20,14 @@ const router = createBrowserRouter([
   {
     path: "/product/:id",
     element: <Product />,
+  },
+  {
+    path: "/basket",
+    element: <Basket />,
+  },
+  {
+    path: "/login",
+    element: <Login />,
   },
   {
     path: "/about",

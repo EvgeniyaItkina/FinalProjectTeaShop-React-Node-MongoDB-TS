@@ -192,7 +192,7 @@ export function TopHeader() {
                         ></Menu>
                     </Box>
                     {authState === "auth" && (
-                        <IconButton color="inherit">
+                        <IconButton color="inherit" to={'/basket'} component={Link}>
                             {itemInBasket > 0 && (
                                 <Badge badgeContent={itemInBasket} color="secondary">
                                     <ShoppingCartIcon />

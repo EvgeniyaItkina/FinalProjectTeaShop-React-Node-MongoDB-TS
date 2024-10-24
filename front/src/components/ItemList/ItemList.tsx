@@ -1,18 +1,15 @@
 import { useMemo, useState } from "react";
 import { useUserProducts } from "../../contexts/UserProductsContext";
-import { saveFavorites } from "../../api";
-import { useBasketActions } from "../../hooks/useBasketActions";
 import { Box, Grid2, Stack } from "@mui/material";
 import { ItemCard } from "../../components/ItemCard/ItemCard";
 import { ItemRow } from "../../components/ItemRow/ItemRow";
 import { ToggleView } from "../../components/ToggleView/ToggleView";
-import { TModalWindow } from "../../TModalWindow/TModalWindow";
+import { useItemActions } from "../../hooks/useItemActions";
 
 
 export const ItemList = (props: { onlyFavorites: boolean }) => {
   const {
     products,
-    setUser,
     user,
     selectedCategory,
     subSelectedCategory,
@@ -52,52 +49,14 @@ export const ItemList = (props: { onlyFavorites: boolean }) => {
     serchValue,
     user?.favaoriteProducts,
   ]);
-  const { addItemToBasket } = useBasketActions();
 
-  const onFavoriteChange = (item_id: string) => {
-    if (!user) return;
-    let newFavoriteProducts: string[] = [];
+  const { onFavoriteChange, handleAddToBasket, AddedItemToBasket } =
+    useItemActions();
 
-    if (user.favaoriteProducts.includes(item_id)) {
-      newFavoriteProducts = user.favaoriteProducts.filter(
-        (id) => id !== item_id
-      );
-      const newUser = { ...user };
-      newUser.favaoriteProducts = newFavoriteProducts;
-      setUser(newUser);
-    } else {
-      const newUser = { ...user };
-      newUser.favaoriteProducts.push(item_id);
-      newFavoriteProducts = newUser.favaoriteProducts;
-      setUser(newUser);
-    }
-
-    saveFavorites(newFavoriteProducts).then((user) => {
-      if (!user) return;
-      setUser(user);
-    });
-  };
-  const [isShowModal, setIsShowModal] = useState(false);
-  const [addedItem, setAddedItem] = useState("");
-  const handleAddToBasket = (item_id: string) => {
-    addItemToBasket(item_id, 1).then((user) => {
-      if (!user) return;
-      const product = user.basketItems.find(
-        (item) => item.product._id === item_id
-      );
-      setAddedItem(product?.product.name || "");
-      setIsShowModal(true);
-    });
-  };
   return (
     <>
       <Box>
-        <TModalWindow
-          isShow={isShowModal}
-          onClose={() => setIsShowModal(false)}
-        >
-          <Box>{addedItem} has added to basket!</Box>
-        </TModalWindow>
+        <AddedItemToBasket />
         <Box>
           <Box display={"flex"} justifyContent={"flex-end"}>
             <ToggleView
@@ -124,6 +83,7 @@ export const ItemList = (props: { onlyFavorites: boolean }) => {
                     justifyContent={"center"}
                   >
                     <ItemCard
+                      isAdmin={Boolean(user?.role === "admin")}
                       onAddToBasket={(item_id) => handleAddToBasket(item_id)}
                       onFavoriteChange={(item_id) => onFavoriteChange(item_id)}
                       isFavorite={
