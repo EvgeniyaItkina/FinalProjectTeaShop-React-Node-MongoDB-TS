@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { getToken } from "./lib/TokenLib";
 import { IUser } from "./type";
 import { IProduct } from "./contexts/UserProductsContext";
@@ -63,6 +63,72 @@ export const saveItemToBasket = async (productId: string, quantity: number) => {
     return response.data;
   } catch (e) {
     console.log(e);
+    return false;
+  }
+};
+
+
+export const login = async (email: string, password: string) => {
+  try {
+    const response = await axios.post<{ token: string }>("/api/auth/login", {
+      email,
+      password,
+    });
+    return response.data;
+  } catch (e) {
+    const err = e as AxiosError;
+    if (err.response?.data && (err.response.data as { error: string }).error) {
+      throw new Error((err.response.data as { error: string }).error);
+    }
+
+    return false;
+  }
+};
+
+export const registration = async (fields: {
+  firstName: string;
+  lastName: string;
+  phone: string;
+  email: string;
+  password: string;
+}) => {
+  try {
+    const response = await axios.post<{ error: 0; message: string }>(
+      "/api/auth/register",
+      fields
+    );
+    return response.data;
+  } catch (e) {
+    const err = e as AxiosError;
+    if (err.response?.data && (err.response.data as { error: string }).error) {
+      throw new Error((err.response.data as { error: string }).error);
+    }
+
+    return false;
+  }
+};
+
+export const editProfile = async (fields: {
+  firstName: string;
+  lastName: string;
+  phone: string;
+}) => {
+  try {
+    const tokenStr = getToken();
+    if (!tokenStr) return false;
+    const response = await axios.post<{ data: IUser; error: 0 }>(
+      "/api/user/edit-data",
+      fields,
+      {
+        headers: { Authorization: `Bearer ${tokenStr}` },
+      }
+    );
+    return response.data;
+  } catch (e) {
+    const err = e as AxiosError;
+    if (err.response?.data && (err.response.data as { error: string }).error) {
+      throw new Error((err.response.data as { error: string }).error);
+    }
     return false;
   }
 };

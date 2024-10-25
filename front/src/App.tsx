@@ -7,6 +7,8 @@ import { Favorites } from "./pages/Favorites";
 import { Product } from "./pages/Product";
 import { Basket } from "./pages/Basket";
 import { Login } from "./pages/Login";
+import { Registration } from "./pages/Registration";
+import { Profile } from "./pages/Profile";
 
 const router = createBrowserRouter([
   {
@@ -28,6 +30,14 @@ const router = createBrowserRouter([
   {
     path: "/login",
     element: <Login />,
+  },
+  {
+    path: "/registration",
+    element: <Registration />,
+  },
+  {
+    path: "/profile",
+    element: <Profile />,
   },
   {
     path: "/about",

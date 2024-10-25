@@ -58,6 +58,7 @@ export const LeftMenu = () => {
                 onClick={() => {
                   setSelectedCategory(undefined);
                   setSubSelectedCategory(undefined);
+                  navigate("/");
                 }}
               >
                 <ListItemText>All</ListItemText>

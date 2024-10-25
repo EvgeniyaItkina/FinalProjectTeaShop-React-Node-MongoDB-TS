@@ -24,7 +24,7 @@ const pages = [
     ["Profile", "/profile", "auth"],
     ["Favorites", "/favorites", "auth"],
     ["CRM", "/crm", "auth", "admin"],
-    ["Logout", "/", "auth"],
+    ["Logout", "/logout", "auth"],
 ];
 
 export function TopHeader() {
@@ -120,16 +120,31 @@ export function TopHeader() {
                             onClose={handleCloseNavMenu}
                             sx={{ display: { xs: "block", md: "none" } }}
                         >
+
                             {pages.map((page, index) => {
-                                if (page[2] === authState || page[2] === "")
+                                const [text, path, regime] = page;
+                                let onClick = undefined;
+                                if (path === "/logout") {
+                                    onClick = (
+                                        e: React.MouseEvent<HTMLAnchorElement, MouseEvent>
+                                    ) => {
+                                        console.log("logout");
+                                        e.preventDefault();
+
+                                        localStorage.removeItem("token");
+                                        window.location.href = "/";
+                                    };
+                                }
+                                if (regime === authState || regime === "")
                                     return (
                                         <MenuItem key={index} onClick={handleCloseNavMenu}>
                                             <Button
-                                                to={page[1]}
+                                                to={path}
                                                 component={Link}
                                                 sx={{ textAlign: "center" }}
+                                                onClick={onClick}
                                             >
-                                                {page[0]}
+                                                {text}
                                             </Button>
                                         </MenuItem>
                                     );
@@ -158,17 +173,35 @@ export function TopHeader() {
 
                     <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
                         {pages.map((page, index) => {
-                            if (page[2] === authState || page[2] === "")
-                                if (page[3] === isAdmin || page[3] === undefined)
+                            const [text, path, regime, forRole] = page;
+
+                            let onClickMy = (
+                                _: React.MouseEvent<HTMLAnchorElement, MouseEvent>
+                            ) => {
+                                handleCloseNavMenu();
+                            };
+
+                            if (path === "/logout") {
+                                onClickMy = (
+                                    e: React.MouseEvent<HTMLAnchorElement, MouseEvent>
+                                ) => {
+                                    e.preventDefault();
+
+                                    localStorage.removeItem("token");
+                                    window.location.href = "/";
+                                };
+                            }
+                            if (regime === authState || regime === "")
+                                if (forRole === isAdmin || forRole === undefined)
                                     return (
                                         <Button
                                             key={index}
-                                            to={page[1]}
+                                            to={path}
                                             component={Link}
-                                            onClick={handleCloseNavMenu}
+                                            onClick={onClickMy}
                                             sx={{ my: 2, color: "white", display: "block" }}
                                         >
-                                            {page[0]}
+                                            {text}
                                         </Button>
                                     );
                         })}
