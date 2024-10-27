@@ -15,7 +15,7 @@ import { Badge, IconButton } from "@mui/material";
 import { useUserProducts } from "../../contexts/UserProductsContext";
 import { Link } from "react-router-dom";
 
-const TEA_SHOP = "Tea Shop";
+const TEA_SHOP = "Flying Teapot Shop";
 
 const pages = [
     ["About", "/about", ""],

@@ -1,11 +1,13 @@
 import { Box, Button, Grid2, IconButton, Typography } from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import { IProduct } from "../../contexts/UserProductsContext";
+import { IProduct } from "../../type";
 
 export const ItemRow = (prop: {
     item: IProduct;
     showActionsButtons: boolean;
     isFavorite: boolean;
+    isAdmin: boolean;
+    adminItemControls: JSX.Element;
     onFavoriteChange: (item_id: string) => void;
     onAddToBasket: (item_id: string) => void;
 }) => {
@@ -46,6 +48,7 @@ export const ItemRow = (prop: {
                             <Typography variant="body2">
                                 <Button onClick={onAddToBasketClick} variant="contained">Add to basket</Button>
                             </Typography>
+                            {prop.isAdmin && prop.adminItemControls}
                             <IconButton
                                 onClick={onFavoriteClick}
                                 aria-label="add-to-favorites"

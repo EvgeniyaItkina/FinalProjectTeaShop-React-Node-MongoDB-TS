@@ -1,13 +1,16 @@
 import { useMemo, useState } from "react";
 import { useUserProducts } from "../../contexts/UserProductsContext";
 import { Box, Grid2, Stack } from "@mui/material";
-import { ItemCard } from "../../components/ItemCard/ItemCard";
-import { ItemRow } from "../../components/ItemRow/ItemRow";
-import { ToggleView } from "../../components/ToggleView/ToggleView";
+import { ItemCard } from "../ItemCard/ItemCard";
+import { ItemRow } from "../ItemRow/ItemRow";
+import { ToggleView } from "../ToggleView/ToggleView";
 import { useItemActions } from "../../hooks/useItemActions";
+import { AdminItemControls } from "../AdminItemControls/AdminItemControls";
+import { AdminItemEdit } from "../AdminItemEdit/AdminItemEdit";
+import { TModalWindow } from "../../TModalWindow/TModalWindow";
 
 
-export const ItemList = (props: { onlyFavorites: boolean }) => {
+export const Item = (props: { onlyFavorites: boolean }) => {
   const {
     products,
     user,
@@ -16,6 +19,10 @@ export const ItemList = (props: { onlyFavorites: boolean }) => {
     serchValue,
   } = useUserProducts();
   const [alignment, setAlignment] = useState<"module" | "list">("module");
+  const [selectedItemToEdit, setSelectedItemToEdit] = useState<string | null>(
+    null
+  );
+
   const filteredProducts = useMemo(() => {
     const selectedProducts = () => {
       if (!selectedCategory) return products;
@@ -53,8 +60,26 @@ export const ItemList = (props: { onlyFavorites: boolean }) => {
   const { onFavoriteChange, handleAddToBasket, AddedItemToBasket } =
     useItemActions();
 
+  function adminDeleteProduct(_id: string) {
+    console.log("delete", _id);
+  }
+  function adminEditProduct(_id: string) {
+    setSelectedItemToEdit(_id);
+    console.log("edit", _id);
+  }
+
   return (
     <>
+    {selectedItemToEdit && (
+        <TModalWindow
+          isShow={Boolean(selectedItemToEdit)}
+          onClose={() => {
+            setSelectedItemToEdit(null);
+          }}
+        >
+          <AdminItemEdit id={selectedItemToEdit} />
+        </TModalWindow>
+      )}
       <Box>
         <AddedItemToBasket />
         <Box>
@@ -83,6 +108,16 @@ export const ItemList = (props: { onlyFavorites: boolean }) => {
                     justifyContent={"center"}
                   >
                     <ItemCard
+                      adminItemControls={
+                        <AdminItemControls
+                          onDelete={() => {
+                            adminDeleteProduct(product._id);
+                          }}
+                          onEdit={() => {
+                            adminEditProduct(product._id);
+                          }}
+                        />
+                      }
                       isAdmin={Boolean(user?.role === "admin")}
                       onAddToBasket={(item_id) => handleAddToBasket(item_id)}
                       onFavoriteChange={(item_id) => onFavoriteChange(item_id)}
@@ -105,6 +140,17 @@ export const ItemList = (props: { onlyFavorites: boolean }) => {
               filteredProducts.map((product) => {
                 return (
                   <ItemRow
+                    adminItemControls={
+                      <AdminItemControls
+                        onDelete={() => {
+                          adminDeleteProduct(product._id);
+                        }}
+                        onEdit={() => {
+                          adminEditProduct(product._id);
+                        }}
+                      />
+                    }
+                    isAdmin={Boolean(user?.role === "admin")}
                     onAddToBasket={(item_id) => handleAddToBasket(item_id)}
                     onFavoriteChange={(item_id) => onFavoriteChange(item_id)}
                     key={product._id}

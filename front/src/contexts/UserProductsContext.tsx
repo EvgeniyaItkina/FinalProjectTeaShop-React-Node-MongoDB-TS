@@ -1,18 +1,5 @@
 import React, { createContext, useContext, useState, ReactNode } from "react";
-import { IUser } from "../type";
-
-export interface IProduct {
-  name: string;
-  category: string;
-  subCategory: string;
-  ingredients: string[];
-  price: number;
-  weight: number;
-  image: string;
-  createdAt: string;
-  updatedAt: string;
-  _id: string;
-}
+import { IProduct, IUser } from "../type";
 
 // Определяем типы для состояния контекста
 interface UserProductsContextType {

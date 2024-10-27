@@ -17,3 +17,16 @@ export interface IUser extends Document {
     basketItems: BasketItem[];
     createdAt: Date;
 }
+
+export interface IProduct {
+  name: string;
+  category: string;
+  subCategory: string;
+  ingredients: string[];
+  price: number;
+  weight: number;
+  image: string;
+  createdAt: string;
+  updatedAt: string;
+  _id: string;
+}

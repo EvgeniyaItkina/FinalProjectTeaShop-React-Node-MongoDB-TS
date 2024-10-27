@@ -9,6 +9,7 @@ import { Basket } from "./pages/Basket";
 import { Login } from "./pages/Login";
 import { Registration } from "./pages/Registration";
 import { Profile } from "./pages/Profile";
+import { About } from "./pages/About";
 
 const router = createBrowserRouter([
   {
@@ -41,7 +42,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/about",
-    element: <div>About</div>,
+    element: <About />,
   },
 ]);
 

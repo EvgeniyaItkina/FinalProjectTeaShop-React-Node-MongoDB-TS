@@ -193,6 +193,7 @@ export const RegistrationProfileContent = (prop: PropType) => {
                             error={Boolean(errorInput.email)}
                             helperText={errorInput.email}
                             onChange={onChange}
+                            autoComplete="off"
                         />
                     )}
 
@@ -207,6 +208,7 @@ export const RegistrationProfileContent = (prop: PropType) => {
                             inputRef={passwordRef}
                             helperText={errorInput.password}
                             onChange={onChange}
+                            autoComplete="off"
                         />
                     )}
                     <Box display={"flex"} justifyContent={"flex-end"}>

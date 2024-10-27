@@ -7,22 +7,22 @@ import {
   IconButton,
   Typography,
 } from "@mui/material";
-import { IProduct } from "../../contexts/UserProductsContext";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { Link } from "react-router-dom";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
+import { IProduct } from "../../type";
 
 export const ItemCard = (prop: {
   item: IProduct;
   showActionsButtons: boolean;
   isFavorite: boolean;
   isAdmin: boolean;
+  adminItemControls: JSX.Element;
   onFavoriteChange: (item_id: string) => void;
   onAddToBasket: (item_id: string) => void;
   maxWidth?: number | string;
 }) => {
   const { item, isFavorite, showActionsButtons } = prop;
+  const AdminItemControls = prop.adminItemControls;
   
   const onFavoriteClick = () => {
     prop.onFavoriteChange(item._id);
@@ -74,16 +74,7 @@ export const ItemCard = (prop: {
             <Typography variant="body2">
               <Button onClick={onAddToBasketClick} variant="contained">Add to basket</Button>
             </Typography>
-            {prop.isAdmin && (
-              <>
-                <IconButton sx={{ marginLeft: "auto" }}>
-                  <EditIcon />
-                </IconButton>
-                <IconButton sx={{ marginLeft: "auto" }}>
-                  <DeleteIcon />
-                </IconButton>
-              </>
-            )}
+            {prop.isAdmin && AdminItemControls}
             <IconButton
               aria-label="add-to-favorites"
               onClick={onFavoriteClick}
