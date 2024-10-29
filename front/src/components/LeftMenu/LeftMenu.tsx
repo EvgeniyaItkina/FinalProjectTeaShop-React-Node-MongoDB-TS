@@ -5,11 +5,11 @@ import {
   ListItemText,
   ListSubheader,
 } from "@mui/material";
-import { useMemo } from "react";
 import { useUserProducts } from "../../contexts/UserProductsContext";
+import { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 
-export const LeftMenu = () => {
+export const LeftMenu = (prop: { onItemSelected?: () => void }) => {
   const { products,
     setSelectedCategory,
     setSubSelectedCategory,
@@ -59,6 +59,7 @@ export const LeftMenu = () => {
                   setSelectedCategory(undefined);
                   setSubSelectedCategory(undefined);
                   navigate("/");
+                  if (prop.onItemSelected) prop.onItemSelected();
                 }}
               >
                 <ListItemText>All</ListItemText>
@@ -79,6 +80,7 @@ export const LeftMenu = () => {
                       setSelectedCategory(category.category);
                       setSubSelectedCategory(undefined);
                       navigate("/");
+                      if (prop.onItemSelected) prop.onItemSelected();
                     }}
                     >
                     <ListItemText>{category.category}</ListItemText>
@@ -99,6 +101,7 @@ export const LeftMenu = () => {
                           setSelectedCategory(category.category);
                           setSubSelectedCategory(subCategory);
                           navigate("/");
+                          if (prop.onItemSelected) prop.onItemSelected();
                         }}
                         >
                           <ListItemText

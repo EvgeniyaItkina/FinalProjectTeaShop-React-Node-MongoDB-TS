@@ -7,6 +7,7 @@ import {
   createProduct,
   deleteProduct,
   editProduct,
+  setUserRole,
 } from "../controllers/adminController";
 
 const router: Router = Router();
@@ -15,5 +16,6 @@ router.put("/edit-product", authenticateToken, adminRole, editProduct);
 router.delete("/delete-product", authenticateToken, adminRole, deleteProduct);
 router.delete("/delete-user", authenticateToken, adminRole, deleteUser);
 router.get("/get-users", authenticateToken, adminRole, getUsers);
+router.patch("/set-user-role", authenticateToken, adminRole, setUserRole);
 
 export default router;

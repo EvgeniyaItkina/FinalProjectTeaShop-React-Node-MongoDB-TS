@@ -1,7 +1,6 @@
 import axios, { AxiosError } from "axios";
 import { getToken } from "./lib/TokenLib";
-import { IUser } from "./type";
-import { IProduct } from "./contexts/UserProductsContext";
+import { IProduct, IUser } from "./type";
 
 export const getAllProducts = async () => {
   const response =await axios.get<{ data: IProduct[]; error: 0 }>(
@@ -119,6 +118,133 @@ export const editProfile = async (fields: {
     const response = await axios.post<{ data: IUser; error: 0 }>(
       "/api/user/edit-data",
       fields,
+      {
+        headers: { Authorization: `Bearer ${tokenStr}` },
+      }
+    );
+    return response.data;
+  } catch (e) {
+    const err = e as AxiosError;
+    if (err.response?.data && (err.response.data as { error: string }).error) {
+      throw new Error((err.response.data as { error: string }).error);
+    }
+    return false;
+  }
+};
+
+
+export const editProduct = async (fields: IProduct) => {
+  try {
+    const tokenStr = getToken();
+    if (!tokenStr) return false;
+    const response = await axios.put<{ data: IProduct; error: 0 }>(
+      "/api/admin/edit-product",
+      fields,
+      {
+        headers: { Authorization: `Bearer ${tokenStr}` },
+      }
+    );
+    return response.data;
+  } catch (e) {
+    const err = e as AxiosError;
+    if (err.response?.data && (err.response.data as { error: string }).error) {
+      throw new Error((err.response.data as { error: string }).error);
+    }
+    return false;
+  }
+};
+
+export const deleteProduct = async (id: string) => {
+  try {
+    const tokenStr = getToken();
+    if (!tokenStr) return false;
+    const response = await axios.delete<{ error: 0 }>(
+      `/api/admin/delete-product?_id=${id}`,
+
+      {
+        headers: { Authorization: `Bearer ${tokenStr}` },
+      }
+    );
+    return response.data;
+  } catch (e) {
+    const err = e as AxiosError;
+    if (err.response?.data && (err.response.data as { error: string }).error) {
+      throw new Error((err.response.data as { error: string }).error);
+    }
+    return false;
+  }
+};
+
+export const createProduct = async (fields: IProduct) => {
+  try {
+    const tokenStr = getToken();
+    if (!tokenStr) return false;
+    const response = await axios.post<{ data: IProduct; error: 0 }>(
+      "/api/admin/create-product",
+      fields,
+      {
+        headers: { Authorization: `Bearer ${tokenStr}` },
+      }
+    );
+    return response.data;
+  } catch (e) {
+    const err = e as AxiosError;
+    if (err.response?.data && (err.response.data as { error: string }).error) {
+      throw new Error((err.response.data as { error: string }).error);
+    }
+    return false;
+  }
+};
+
+
+export const getUsers = async () => {
+  try {
+    const tokenStr = getToken();
+    if (!tokenStr) return false;
+    const response = await axios.get<{ data: IUser[]; error: 0 }>(
+      "/api/admin/get-users",
+      {
+        headers: { Authorization: `Bearer ${tokenStr}` },
+      }
+    );
+    return response.data;
+  } catch (e) {
+    const err = e as AxiosError;
+    if (err.response?.data && (err.response.data as { error: string }).error) {
+      throw new Error((err.response.data as { error: string }).error);
+    }
+    return false;
+  }
+};
+
+export const deleteUser = async (id: string) => {
+  try {
+    const tokenStr = getToken();
+    if (!tokenStr) return false;
+    const response = await axios.delete<{ error: 0 }>(
+      `/api/admin/delete-user?_id=${id}`,
+
+      {
+        headers: { Authorization: `Bearer ${tokenStr}` },
+      }
+    );
+    return response.data;
+  } catch (e) {
+    const err = e as AxiosError;
+    if (err.response?.data && (err.response.data as { error: string }).error) {
+      throw new Error((err.response.data as { error: string }).error);
+    }
+    return false;
+  }
+};
+
+export const setUserRole = async (_id: string, role: string) => {
+  try {
+    const tokenStr = getToken();
+    if (!tokenStr) return false;
+    const response = await axios.patch<{ error: 0; data: IUser }>(
+      "/api/admin/set-user-role",
+      { _id, role },
       {
         headers: { Authorization: `Bearer ${tokenStr}` },
       }

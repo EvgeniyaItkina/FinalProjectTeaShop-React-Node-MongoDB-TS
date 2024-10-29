@@ -6,6 +6,7 @@ type Prop = {
     isShow: boolean;
     onClose: () => void;
     children: React.ReactNode;
+    showCloseButton?: boolean;
 };
 const style = {
     position: "absolute",
@@ -20,6 +21,7 @@ const style = {
 };
 export const TModalWindow = (prop: Prop) => {
     const { isShow, onClose, children } = prop;
+    const showCloseButton = prop.showCloseButton ?? true;
     return (
         <Modal
             open={isShow}
@@ -29,11 +31,13 @@ export const TModalWindow = (prop: Prop) => {
         >
             <Box sx={style}>
                 {children}
+                {showCloseButton && (
                 <Box marginTop={3}>
                     <Button variant="contained" onClick={() => prop.onClose()}>
                         Close
                     </Button>
                 </Box>
+                )}
             </Box>
         </Modal>
     );

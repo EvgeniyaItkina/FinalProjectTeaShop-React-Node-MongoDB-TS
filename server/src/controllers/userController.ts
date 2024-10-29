@@ -81,7 +81,7 @@ export async function setQuantityItemToBasket(
     const { userId } = decoded;
     const { productId, quantity } = req.body;
     const user = await User.findOne({ _id: userId }) as IUser;
-    
+
     const product = await Product.findOne({ _id: productId });
     if (!product) {
       res.status(404).send();
@@ -93,9 +93,8 @@ export async function setQuantityItemToBasket(
     });
     if (quantity === 0) {
       // Remove item from basket
-      user.basketItems = user.basketItems?.filter((item) => {
-        return item.product.toString() !== productId;
-      });
+      await user.populate("basketItems.product");
+      user.basketItems = user.basketItems.filter((i) => i.product);
       await user.save();
       await user.populate("basketItems.product");
       res.send({ error: 0, data: user });

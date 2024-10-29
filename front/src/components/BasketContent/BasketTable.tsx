@@ -34,67 +34,70 @@ export const BasketTable = (prop: { basketItems: BasketItem[] }) => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {prop.basketItems.map((item, index) => (
-                            <TableRow
-                                key={index}
-                                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                            >
-                                <TableCell component="th" scope="row">
-                                    {item.product.name}
-                                </TableCell>
-                                <TableCell align="right">{item.price}</TableCell>
-                                <TableCell align="center">
-                                    <IconButton
-                                        size="small"
-                                        aria-label="plus"
-                                        onClick={() => {
-                                            setItemToBasket(item.product._id, item.quantity + 1);
-                                        }}
-                                    >
-                                        <AddIcon />
-                                    </IconButton>
-                                    <Input
-                                        sx={{ width: 40 }}
-                                        value={item.quantity}
-                                        inputProps={{
-                                            style: { textAlign: "center" },
-                                        }}
-                                        onChange={(e) => {
-                                            if (!e.target.value) return;
-                                            setItemToBasket(
-                                                item.product._id,
-                                                parseInt(e.target.value)
-                                            );
-                                        }}
-                                    ></Input>
-                                    <IconButton
-                                        size="small"
-                                        aria-label="minus"
-                                        onClick={() => {
-                                            if (item.quantity === 1) return;
-                                            setItemToBasket(item.product._id, item.quantity - 1);
-                                        }}
-                                    >
-                                        <RemoveIcon />
-                                    </IconButton>
-                                </TableCell>
-                                <TableCell align="right">
-                                    {(item.price * item.quantity).toFixed(2)}
-                                </TableCell>
-                                <TableCell align="right">
-                                    <IconButton
-                                        aria-label="delete"
-                                        onClick={() => {
-                                            console.log("delete");
+                        {prop.basketItems.map((item, index) => {
+                            if (item.product === null) return null;
+                            return (
+                                <TableRow
+                                    key={index}
+                                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                                >
+                                    <TableCell component="th" scope="row">
+                                        {item.product.name}
+                                    </TableCell>
+                                    <TableCell align="right">{item.price}</TableCell>
+                                    <TableCell align="center">
+                                        <IconButton
+                                            size="small"
+                                            aria-label="plus"
+                                            onClick={() => {
+                                                setItemToBasket(item.product._id, item.quantity + 1);
+                                            }}
+                                        >
+                                            <AddIcon />
+                                        </IconButton>
+                                        <Input
+                                            sx={{ width: 40 }}
+                                            value={item.quantity}
+                                            inputProps={{
+                                                style: { textAlign: "center" },
+                                            }}
+                                            onChange={(e) => {
+                                                if (!e.target.value) return;
+                                                setItemToBasket(
+                                                    item.product._id,
+                                                    parseInt(e.target.value)
+                                                );
+                                            }}
+                                        ></Input>
+                                        <IconButton
+                                            size="small"
+                                            aria-label="minus"
+                                            onClick={() => {
+                                                if (item.quantity === 1) return;
+                                                setItemToBasket(item.product._id, item.quantity - 1);
+                                            }}
+                                        >
+                                            <RemoveIcon />
+                                        </IconButton>
+                                    </TableCell>
+                                    <TableCell align="right">
+                                        {(item.price * item.quantity).toFixed(2)}
+                                    </TableCell>
+                                    <TableCell align="right">
+                                        <IconButton
+                                            aria-label="delete"
+                                            onClick={() => {
+                                                console.log("delete");
 
-                                            deleteItemFromBasket(item.product._id);
-                                        }}
-                                    >
-                                        <DeleteIcon />
-                                    </IconButton>
-                                </TableCell>
-                            </TableRow>
-                        ))}
+                                                deleteItemFromBasket(item.product._id);
+                                            }}
+                                        >
+                                            <DeleteIcon />
+                                        </IconButton>
+                                    </TableCell>
+                                </TableRow>
+                            );
+                        })}
                         <TableRow>
                             <TableCell colSpan={3} align="right">
                                 Total

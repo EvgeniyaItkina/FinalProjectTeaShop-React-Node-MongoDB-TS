@@ -59,7 +59,7 @@ export async function createProduct(req: Request, res: Response) {
       throw Error(error.message);
     }
 
-    const product = createProductService(value);
+    const product = await createProductService(value);
     res.send({ error: 0, data: product });
   } catch (error: any) {
     res.status(400).send({ error: error.message });
@@ -122,6 +122,32 @@ export async function deleteProduct(req: Request, res: Response) {
     }
 
     res.send({ error: 0 });
+  } catch (error: any) {
+    res.status(400).send({ error: error.message });
+  }
+}
+
+
+export async function setUserRole(req: Request, res: Response) {
+  try {
+    const { _id, role } = req.body;
+
+    if (!_id || !role) {
+      throw Error("Id and role are required");
+    }
+
+    const user = await User.findById(_id);
+    if (!user) {
+      res.status(404).send({ error: "User not found" });
+      return;
+    }
+    if (role === "admin") {
+      user.role = "admin";
+    } else {
+      user.role = "user";
+    }
+    const updatedUser = await user.save();
+    res.send({ error: 0, data: updatedUser });
   } catch (error: any) {
     res.status(400).send({ error: error.message });
   }

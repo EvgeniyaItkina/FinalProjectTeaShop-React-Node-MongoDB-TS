@@ -1,19 +1,16 @@
 
 import {
-    Alert,
     Box,
     Button,
-    Collapse,
-    IconButton,
     Stack,
     TextField,
     Typography,
 } from "@mui/material";
 import Joi from "joi";
-import CloseIcon from "@mui/icons-material/Close";
 import { useRef, useState } from "react";
 import { login } from "../../api";
 import { TModalWindow } from "../../TModalWindow/TModalWindow";
+import { ServerErrorCollapse } from "../ServerErrorCollapse/ServerErrorCollapse";
 
 // Define a validation schema using Joi for email and password fields
 const schema = Joi.object<{ email: string; password: string }>({
@@ -45,40 +42,24 @@ export const LoginContent = () => {
 
     return (
         <>
-        {/* Modal Window */}
-        <TModalWindow
+            {/* Modal Window */}
+            <TModalWindow
                 isShow={isShow}
                 onClose={() => setIsShow(false)}
             >
                 <Typography variant="h6" component="h2">
                     Password Recovery
                 </Typography>
-                <Typography  sx={{ mt: 2 }}>
+                <Typography sx={{ mt: 2 }}>
                     For password recovery, call to admin.
                 </Typography>
             </TModalWindow>
-            
+
             {/* Display an alert message if there's a server error */}
-            <Collapse in={Boolean(serverError)}>
-                <Alert
-                    severity="error"
-                    action={
-                        <IconButton
-                            aria-label="close"
-                            color="inherit"
-                            size="small"
-                            onClick={() => {
-                                setServerError("");
-                            }}
-                        >
-                            <CloseIcon fontSize="inherit" />
-                        </IconButton>
-                    }
-                    sx={{ mb: 2 }}
-                >
-                    {serverError}
-                </Alert>
-            </Collapse>
+            <ServerErrorCollapse
+                serverError={serverError}
+                setServerError={setServerError}
+            />
             <Box
                 component="form"
                 display={"flex"}

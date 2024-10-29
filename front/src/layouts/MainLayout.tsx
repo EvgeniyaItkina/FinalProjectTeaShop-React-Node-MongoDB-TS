@@ -2,6 +2,7 @@ import React from "react";
 import { TopHeader } from "../components/TopHeader/TopHeader";
 import { Box, Grid2 } from "@mui/material";
 import { LeftMenu } from "../components/LeftMenu/LeftMenu";
+import { Footer } from "../components/Footer/Footer";
 
 export const MainLayout: React.FC<{
   children: JSX.Element;
@@ -21,6 +22,7 @@ export const MainLayout: React.FC<{
           </Box>
         </Grid2>
       </Grid2>
+      <Footer />
     </>
   );
 };
