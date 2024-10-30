@@ -11,6 +11,7 @@ import imagesRoute from "./routes/imagesRoute";
 import morgan from "morgan";
 import fs from "fs";
 import path from "path";
+import { setupLogging } from "./middlewares/logges/morgan_logger";
 const app: Application = express();
 const PORT = process.env.PORT || 5000;
 
@@ -21,12 +22,8 @@ app.listen(PORT, async () => {
   console.log(`Example app listening on port ${PORT}`);
 });
 
-//looging
-const logStream = fs.createWriteStream(path.join(__dirname, "access.log"), {
-  flags: "a",
-});
-
-app.use(morgan("combined", { stream: logStream }));
+// morgan
+setupLogging(app);
 
 // Middleware для парсинга JSON
 app.use(express.json({ limit: "10mb" }));
