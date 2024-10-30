@@ -1,14 +1,13 @@
 import { Schema, model, Document, Types } from "mongoose";
 import Product from "./productModel";
 
-// Интерфейс для типа данных пользователя
 export interface IUser extends Document {
   firstName: string;
   lastName: string;
   phone: string;
   email: string;
   password: string;
-  role: "user" | "admin"; // Допустимые значения для роли
+  role: "user" | "admin"; 
   favaoriteProducts: Types.ObjectId[];
   basketItems: {
     product: Types.ObjectId;
@@ -27,7 +26,6 @@ const basketItem = new Schema({
   price: { type: Number, required: true },
 });
 
-// Схема пользователя
 const userSchema = new Schema<IUser>(
   {
     firstName: {
@@ -75,7 +73,7 @@ const userSchema = new Schema<IUser>(
     },
   },
   {
-    timestamps: true, // Добавляет поля createdAt и updatedAt автоматически
+    timestamps: true,
   }
 );
 
@@ -84,5 +82,32 @@ userSchema.index({ email: 1 }, { unique: true });
 
 // Модель пользователя
 const User = model<IUser>("User", userSchema);
+
+export async function findUsersWithProductInBasket(productId: string) {
+  try {
+    const users = await User.find({
+      basketItems: { $elemMatch: { product: productId } },
+    });
+
+    return users;
+  } catch (error) {
+    console.error("Error finding users with the product in basket:", error);
+  }
+}
+
+export async function removeProductFromBasket(
+  userId: string,
+  productId: string
+) {
+  try {
+    await User.updateOne(
+      { _id: userId },
+      { $pull: { basketItems: { product: productId } } }
+    );
+    console.log("Product removed from basketItems successfully.");
+  } catch (error) {
+    console.error("Error removing product from basketItems:", error);
+  }
+}
 
 export default User;

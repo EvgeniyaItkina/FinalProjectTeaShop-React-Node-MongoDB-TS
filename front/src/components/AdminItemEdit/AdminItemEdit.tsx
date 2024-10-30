@@ -11,12 +11,12 @@ import {
 } from "@mui/material";
 import { useUserProducts } from "../../contexts/UserProductsContext";
 import { useEffect, useRef, useState } from "react";
-
 import ControlPointDuplicateIcon from "@mui/icons-material/ControlPointDuplicate";
 import { IProduct } from "../../type";
 import Joi from "joi";
 import { createProduct, editProduct } from "../../api";
 import { ServerErrorCollapse } from "../ServerErrorCollapse/ServerErrorCollapse";
+import CloseIcon from "@mui/icons-material/Close";
 
 //Тип Prop указывает на то, что если есть `id`, выполняется редактирование, если нет — добавление нового элемента
 // код делится на создание нового продукта или редактирование старого
@@ -59,7 +59,8 @@ export const AdminItemEdit = (prop: Prop) => {
         {}
     );
     const [errorInput, setError] = useState(errorInit);
-    const [itemSelected, setItemSelected] = useState<IProduct>({
+    //add optional download image 
+    const [itemSelected, setItemSelected] = useState<IProduct & { uploadImage?: string }>({
         name: "",
         category: "",
         subCategory: "",
@@ -70,6 +71,7 @@ export const AdminItemEdit = (prop: Prop) => {
         createdAt: "",
         updatedAt: "",
         _id: "",
+        uploadImage: "",
     });
 
     // Initialize `itemSelected` with existing product data if `id` exists
@@ -84,8 +86,8 @@ export const AdminItemEdit = (prop: Prop) => {
     // Clear specific field error when user types in the input
     // Сброс ошибки для конкретного поля при вводе пользователем
     const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      setError({ ...errorInput, [e.target.id]: "" });
-      setItemSelected({ ...itemSelected, [e.target.id]: e.target.value });
+        setError({ ...errorInput, [e.target.id]: "" });
+        setItemSelected({ ...itemSelected, [e.target.id]: e.target.value });
     };
 
     // Add ingredient to the ingredients array if it doesn’t already exist
@@ -136,7 +138,16 @@ export const AdminItemEdit = (prop: Prop) => {
 
         // Prepare the item for saving, including `_id` if editing
         // Подготовка элемента для сохранения, включая `_id`, если идет редактирование
-        const updateItem = { ...value, _id: itemSelected._id } as IProduct;
+        // add new image to Product, validation to check name product
+        const updateItem = {
+            ...value,
+            _id: itemSelected._id,
+            uploadImage: itemSelected.uploadImage,
+        } as IProduct & { uploadImage?: string };
+        if (itemSelected.uploadImage && !updateItem.image) {
+            setError({ ...errorInput, image: "Please fill image name" });
+            return;
+        }
 
         if (prop.id) {
             editProduct(updateItem)
@@ -159,10 +170,9 @@ export const AdminItemEdit = (prop: Prop) => {
                     if (!res) throw new Error("Server error");
                     const savedItem = res.data;
                     console.log(savedItem);
-
-                    // products.push(savedItem);
-                    // setProducts([...products]);
-                    // prop.onItemChanged();
+                    products.push(savedItem);
+                    setProducts([...products]);
+                    prop.onItemChanged();
                 })
                 .catch((e) => {
                     setServerError(e.message ?? "Server error");
@@ -171,14 +181,11 @@ export const AdminItemEdit = (prop: Prop) => {
     };
 
     return (
-        <Box>
+        <Box overflow={"auto"} maxHeight={"90vh"}>
             {/* Display server error if exists */}
             {/* Отображение ошибки сервера, если она есть */}
             <Box component={"h1"}>{prop.id ? "Edit Item" : "Add Item"}</Box>
-            <ServerErrorCollapse
-                serverError={serverError}
-                setServerError={setServerError}
-            />
+            <ServerErrorCollapse {...{ serverError, setServerError }} />
             <Stack gap={3}>
                 <TextField
                     required
@@ -295,6 +302,58 @@ export const AdminItemEdit = (prop: Prop) => {
                     helperText={errorInput.image}
                     onChange={onChange}
                 />
+                {/* add pictures from computer and send to backend  server */}
+                <Box>
+                    <Button variant="contained" component="label">
+                        Upload Image
+                        <input
+                            type="file"
+                            hidden
+                            accept="image/*"
+                            ref={(el) => (inputRefs.current["uploadImage"] = el as any)}
+                            onChange={(e) => {
+                                const file = e.target.files?.[0];
+
+                                if (file) {
+                                    const reader = new FileReader();
+                                    reader.onloadend = () => {
+                                        setError({ ...errorInput, image: "" });
+                                        setItemSelected({
+                                            ...itemSelected,
+                                            uploadImage: reader.result as string,
+                                            image: file.name,
+                                        });
+                                    };
+                                    reader.readAsDataURL(file);
+                                }
+                            }}
+                        />
+                    </Button>
+                    {itemSelected.uploadImage && (
+                        <Box mt={2} position={"relative"}>
+                            <Box position={"absolute"} right={0} top={2}>
+                                <IconButton
+                                    onClick={() => {
+                                        setItemSelected({ ...itemSelected, uploadImage: "" });
+                                        (
+                                            inputRefs.current["uploadImage"] as HTMLInputElement
+                                        ).value = "";
+                                    }}
+                                >
+                                    <CloseIcon />
+                                </IconButton>
+                            </Box>
+                            <img
+                                src={itemSelected.uploadImage}
+                                alt="Preview"
+                                style={{ maxWidth: "200px" }}
+                            />
+                        </Box>
+                    )}
+                </Box>
+
+
+
                 <Stack direction="row" spacing={2}>
                     <Button variant="contained" onClick={prop.onItemChanged}>
                         Back

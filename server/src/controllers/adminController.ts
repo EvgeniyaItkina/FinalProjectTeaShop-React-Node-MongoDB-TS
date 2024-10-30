@@ -1,8 +1,14 @@
-import { Response, Request } from "express";
-import User from "../models/userModel";
+import e, { Response, Request } from "express";
+import User, {
+  findUsersWithProductInBasket,
+  IUser,
+  removeProductFromBasket,
+} from "../models/userModel";
 import Joi from "joi";
 import Product from "../models/productModel";
 import { createProductService } from "../services/productServices";
+
+const imageUploadPath = "public/images";
 
 export async function deleteUser(req: Request, res: Response) {
   try {
@@ -43,8 +49,16 @@ const schemaJoi = Joi.object({
 
 export async function createProduct(req: Request, res: Response) {
   try {
-    const { name, category, subCategory, ingredients, price, weight, image } =
-      req.body;
+    const {
+      name,
+      category,
+      subCategory,
+      ingredients,
+      price,
+      weight,
+      image,
+      uploadImage,
+    } = req.body;
     const { error, value } = schemaJoi.validate({
       name,
       category,
@@ -57,6 +71,14 @@ export async function createProduct(req: Request, res: Response) {
 
     if (error) {
       throw Error(error.message);
+    }
+    if (uploadImage && !image) {
+      throw Error("Image name is required");
+    }
+    if (uploadImage) {
+      let m = uploadImage.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
+      const imagePath = `${imageUploadPath}/${value.image}`;
+      require("fs").writeFileSync(imagePath, m[2], "base64");
     }
 
     const product = await createProductService(value);
@@ -77,6 +99,7 @@ export async function editProduct(req: Request, res: Response) {
       price,
       weight,
       image,
+      uploadImage,
     } = req.body;
     const { error, value } = schemaJoi.validate({
       _id,
@@ -89,8 +112,17 @@ export async function editProduct(req: Request, res: Response) {
       image,
     });
 
+    if (uploadImage && !image) {
+      throw Error("Image name is required");
+    }
+
     if (error) {
       throw Error(error.message);
+    }
+    if (uploadImage) {
+      let m = uploadImage.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
+      const imagePath = `${imageUploadPath}/${value.image}`;
+      require("fs").writeFileSync(imagePath, m[2], "base64");
     }
 
     const product = await Product.findById(value._id);
@@ -109,7 +141,7 @@ export async function editProduct(req: Request, res: Response) {
 
 export async function deleteProduct(req: Request, res: Response) {
   try {
-    const { _id } = req.query;
+    const { _id } = req.query as { _id: string };
 
     if (!_id) {
       throw Error("Id is required");
@@ -120,13 +152,16 @@ export async function deleteProduct(req: Request, res: Response) {
       res.status(404).send({ error: "Product not found" });
       return;
     }
+    const usersWithProduct = await findUsersWithProductInBasket(_id);
+    usersWithProduct?.forEach(async (user: any) => {
+      removeProductFromBasket(user._id, _id);
+    });
 
     res.send({ error: 0 });
   } catch (error: any) {
     res.status(400).send({ error: error.message });
   }
 }
-
 
 export async function setUserRole(req: Request, res: Response) {
   try {

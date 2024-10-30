@@ -8,8 +8,9 @@ import { createAdmin } from "./tools/createAdmin";
 import adminRoutes from "./routes/adminRoutes";
 import { seedProducts } from "./tools/seedProducts";
 import imagesRoute from "./routes/imagesRoute";
-// import errorHandler from "./middlewares/errorHandler"; // глобальная обработка ошибок
-
+import morgan from "morgan";
+import fs from "fs";
+import path from "path";
 const app: Application = express();
 const PORT = process.env.PORT || 5000;
 
@@ -20,8 +21,15 @@ app.listen(PORT, async () => {
   console.log(`Example app listening on port ${PORT}`);
 });
 
+//looging
+const logStream = fs.createWriteStream(path.join(__dirname, "access.log"), {
+  flags: "a",
+});
+
+app.use(morgan("combined", { stream: logStream }));
+
 // Middleware для парсинга JSON
-app.use(express.json());
+app.use(express.json({ limit: "10mb" }));
 
 // Подключение к базе данных
 

@@ -1,4 +1,3 @@
-
 import {
     Box,
     Button,
@@ -11,6 +10,7 @@ import { useRef, useState } from "react";
 import { login } from "../../api";
 import { TModalWindow } from "../../TModalWindow/TModalWindow";
 import { ServerErrorCollapse } from "../ServerErrorCollapse/ServerErrorCollapse";
+import { setToken } from "../../lib/TokenLib"
 
 // Define a validation schema using Joi for email and password fields
 const schema = Joi.object<{ email: string; password: string }>({
@@ -116,7 +116,7 @@ export const LoginContent = () => {
                                 login(value.email, value.password)
                                     .then((res) => {
                                         if (res) {
-                                            localStorage.setItem("token", res.token); // Store the token in localStorage
+                                            setToken(res.token);
                                             window.location.href = "/";  // Redirect to homepage (restart app to get user products)
                                         }
                                     })

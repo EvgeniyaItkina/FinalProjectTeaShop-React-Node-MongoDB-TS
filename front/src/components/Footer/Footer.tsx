@@ -1,7 +1,9 @@
 import { Box, Button, Stack } from "@mui/material";
 import { Link } from "react-router-dom";
+import { useUserProducts } from "../../contexts/UserProductsContext";
 
 export const Footer = () => {
+    const { user } = useUserProducts();
     return (
         <Box
             position={{ xs: "fixed", md: "unset" }}
@@ -21,9 +23,10 @@ export const Footer = () => {
                 <Button to={"/about"} component={Link}>
                     About
                 </Button>
-                <Button to={"/favorites"} component={Link}>
-                    Favorites
-                </Button>
+                {user &&
+                    <Button to={"/favorites"} component={Link}>
+                        Favorites
+                    </Button>}
             </Stack>
         </Box>
     );

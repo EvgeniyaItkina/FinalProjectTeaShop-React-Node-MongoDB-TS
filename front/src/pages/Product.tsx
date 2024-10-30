@@ -2,8 +2,8 @@ import { useParams } from "react-router-dom";
 import { MainLayout } from "../layouts/MainLayout";
 import { useUserProducts } from "../contexts/UserProductsContext";
 import { ItemCard } from "../components/ItemCard/ItemCard";
-import { Box } from "@mui/material";
 import { useItemActions } from "../hooks/useItemActions";
+import { Box } from "@mui/material";
 
 export const Product = () => {
   const { id } = useParams();
@@ -21,6 +21,7 @@ export const Product = () => {
         <AddedItemToBasket />
         <Box width={"80%"} margin={"auto"}>
           <ItemCard
+            adminItemControls={null}
             isAdmin={Boolean(user?.role === "admin")}
             maxWidth={"100%"}
             item={product}
@@ -34,4 +35,3 @@ export const Product = () => {
     </MainLayout>
   );
 };
-

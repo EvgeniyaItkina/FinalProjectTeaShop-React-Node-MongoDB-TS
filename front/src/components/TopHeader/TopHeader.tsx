@@ -14,6 +14,7 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { Badge, IconButton } from "@mui/material";
 import { useUserProducts } from "../../contexts/UserProductsContext";
 import { Link } from "react-router-dom";
+import { removeToken } from "../../lib/TokenLib";
 
 const TEA_SHOP = "Flying Teapot Shop";
 
@@ -130,8 +131,7 @@ export function TopHeader() {
                                     ) => {
                                         console.log("logout");
                                         e.preventDefault();
-
-                                        localStorage.removeItem("token");
+                                        removeToken();
                                         window.location.href = "/";
                                     };
                                 }
@@ -186,8 +186,7 @@ export function TopHeader() {
                                     e: React.MouseEvent<HTMLAnchorElement, MouseEvent>
                                 ) => {
                                     e.preventDefault();
-
-                                    localStorage.removeItem("token");
+                                    removeToken();
                                     window.location.href = "/";
                                 };
                             }

@@ -1,9 +1,10 @@
 import axios, { AxiosError } from "axios";
+
 import { getToken } from "./lib/TokenLib";
 import { IProduct, IUser } from "./type";
 
 export const getAllProducts = async () => {
-  const response =await axios.get<{ data: IProduct[]; error: 0 }>(
+  const response = await axios.get<{ data: IProduct[]; error: 0 }>(
     "/api/product/all-product"
   );
   return response;
@@ -46,7 +47,6 @@ export const saveFavorites = async (favaoriteProducts: string[]) => {
     return false;
   }
 };
-
 export const saveItemToBasket = async (productId: string, quantity: number) => {
   const tokenStr = getToken();
   if (!tokenStr) return false;
@@ -65,7 +65,6 @@ export const saveItemToBasket = async (productId: string, quantity: number) => {
     return false;
   }
 };
-
 
 export const login = async (email: string, password: string) => {
   try {
@@ -132,7 +131,6 @@ export const editProfile = async (fields: {
   }
 };
 
-
 export const editProduct = async (fields: IProduct) => {
   try {
     const tokenStr = getToken();
@@ -195,7 +193,6 @@ export const createProduct = async (fields: IProduct) => {
     return false;
   }
 };
-
 
 export const getUsers = async () => {
   try {

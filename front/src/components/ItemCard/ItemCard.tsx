@@ -7,6 +7,7 @@ import {
   IconButton,
   Typography,
 } from "@mui/material";
+
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { Link } from "react-router-dom";
 import { IProduct } from "../../type";
@@ -16,14 +17,13 @@ export const ItemCard = (prop: {
   showActionsButtons: boolean;
   isFavorite: boolean;
   isAdmin: boolean;
-  adminItemControls: JSX.Element;
+  adminItemControls: JSX.Element | null;
   onFavoriteChange: (item_id: string) => void;
   onAddToBasket: (item_id: string) => void;
   maxWidth?: number | string;
 }) => {
   const { item, isFavorite, showActionsButtons } = prop;
   const AdminItemControls = prop.adminItemControls;
-  
   const onFavoriteClick = () => {
     prop.onFavoriteChange(item._id);
   };
@@ -34,16 +34,18 @@ export const ItemCard = (prop: {
   return (
     <Card sx={{ maxWidth: prop.maxWidth ? prop.maxWidth : 345 }}>
       <CardHeader
-      to={"/product/" + item._id}
+        to={"/product/" + item._id}
+        component={Link}
         sx={{ textAlign: "center" }}
         title={<Typography variant="h6">{item.name}</Typography>}
       />
       <CardContent>
-        <Box sx={{ height: "250px" }}
+        <Box
+          sx={{ height: "250px" }}
           to={"/product/" + item._id}
           component={Link}
           display={"block"}
-          >
+        >
           <img
             style={{
               maxWidth: "100%",
@@ -72,7 +74,9 @@ export const ItemCard = (prop: {
         {showActionsButtons && (
           <Box display={"flex"} marginTop={1}>
             <Typography variant="body2">
-              <Button onClick={onAddToBasketClick} variant="contained">Add to basket</Button>
+              <Button onClick={onAddToBasketClick} variant="contained">
+                Add to basket
+              </Button>
             </Typography>
             {prop.isAdmin && AdminItemControls}
             <IconButton

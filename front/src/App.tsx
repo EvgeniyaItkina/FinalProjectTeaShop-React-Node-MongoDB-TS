@@ -54,7 +54,6 @@ const router = createBrowserRouter([
 function App() {
   const { setProducts, setUser } = useUserProducts();
   useEffect(() => {
-    console.log("App mounted");
 
     getAllProducts().then((response) => {
       setProducts(response.data.data);

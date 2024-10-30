@@ -1,4 +1,4 @@
-import { Response } from "express";
+import e, { Response } from "express";
 import User, { IUser } from "../models/userModel";
 import { RequestWithDecodedToken } from "../middlewares/usersMiddleware";
 import Joi from "joi";
@@ -14,7 +14,9 @@ export async function getMeData(req: RequestWithDecodedToken, res: Response) {
   try {
     const decoded = req.decoded;
 
-    const user = await User.findOne({ _id: decoded.userId }).populate('basketItems.product');
+    const user = await User.findOne({ _id: decoded.userId }).populate(
+      "basketItems.product"
+    );
     if (!user) {
       res.status(404).send();
       return;
@@ -80,7 +82,7 @@ export async function setQuantityItemToBasket(
     const decoded = req.decoded;
     const { userId } = decoded;
     const { productId, quantity } = req.body;
-    const user = await User.findOne({ _id: userId }) as IUser;
+    const user = (await User.findOne({ _id: userId })) as IUser;
 
     const product = await Product.findOne({ _id: productId });
     if (!product) {
@@ -93,12 +95,9 @@ export async function setQuantityItemToBasket(
     });
     if (quantity === 0) {
       // Remove item from basket
-      await user.populate("basketItems.product");
-      user.basketItems = user.basketItems.filter((i) => i.product);
-      await user.save();
-      await user.populate("basketItems.product");
-      res.send({ error: 0, data: user });
-      return;
+      user.basketItems = user.basketItems?.filter((item) => {
+        return item.product.toString() !== productId;
+      });
     } else {
       // Update quantity of item in basket
       if (basket_item) {
@@ -111,10 +110,10 @@ export async function setQuantityItemToBasket(
           price: product.price,
         });
       }
-      await user.save();
-      await user.populate("basketItems.product");
-      res.send({ error: 0, data: user });
     }
+    await user.save();
+    await user.populate("basketItems.product");
+    res.send({ error: 0, data: user });
   } catch (error: any) {
     res.status(400).send({ error: error.message });
   }
