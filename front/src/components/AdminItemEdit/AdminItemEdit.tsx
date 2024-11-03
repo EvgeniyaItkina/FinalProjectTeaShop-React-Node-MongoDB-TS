@@ -169,7 +169,6 @@ export const AdminItemEdit = (prop: Prop) => {
                 .then((res) => {
                     if (!res) throw new Error("Server error");
                     const savedItem = res.data;
-                    console.log(savedItem);
                     products.push(savedItem);
                     setProducts([...products]);
                     prop.onItemChanged();

@@ -114,7 +114,6 @@ export const CRMContent = () => {
                                         <IconButton
                                             aria-label="delete"
                                             onClick={() => {
-                                                console.log("delete");
                                                 onClickDelete(user._id);
                                             }}
                                         >

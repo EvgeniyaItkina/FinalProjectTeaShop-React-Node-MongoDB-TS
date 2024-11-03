@@ -87,7 +87,6 @@ export const BasketTable = (prop: { basketItems: BasketItem[] }) => {
                                         <IconButton
                                             aria-label="delete"
                                             onClick={() => {
-                                                console.log("delete");
 
                                                 deleteItemFromBasket(item.product._id);
                                             }}

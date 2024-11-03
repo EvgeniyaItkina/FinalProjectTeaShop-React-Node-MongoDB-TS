@@ -62,6 +62,7 @@
    - Registration and login
    - Access to **Favorites** and **Basket** pages
    - Profile management (name and phone)
+   - Includes an authorization check that automatically redirects unauthorized users to the homepage, ensuring secure access to user-specific pages like the shopping basket.
 
 2. **For Admins**:
    - Product management (create, edit, delete products)

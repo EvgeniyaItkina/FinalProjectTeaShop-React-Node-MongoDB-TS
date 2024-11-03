@@ -36,8 +36,6 @@ export async function authenticateToken(
 
     next();
   } catch (error: any) {
-    console.log(error.message);
-
     res.status(403).send();
   }
 }

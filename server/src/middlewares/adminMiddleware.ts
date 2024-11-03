@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { RequestWithDecodedToken } from "./usersMiddleware";
+import { errorLogStream } from "./logges/morgan_logger";
 
 export function adminRole(req: Request, res: Response, next: NextFunction) {
   try {
@@ -10,7 +11,7 @@ export function adminRole(req: Request, res: Response, next: NextFunction) {
 
     next();
   } catch (error: any) {
-    console.log(error.message);
+    errorLogStream.write(`Error removing product from basketItems: ${error.message}\n`);
 
     res.status(403).send();
     return;

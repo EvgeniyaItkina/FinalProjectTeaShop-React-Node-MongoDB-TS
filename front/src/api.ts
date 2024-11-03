@@ -24,7 +24,6 @@ export const getMe = async () => {
     );
     return response.data;
   } catch (e) {
-    console.log(e);
     return false;
   }
 };
@@ -43,7 +42,6 @@ export const saveFavorites = async (favaoriteProducts: string[]) => {
     );
     return response.data.data;
   } catch (e) {
-    console.log(e);
     return false;
   }
 };
@@ -61,7 +59,6 @@ export const saveItemToBasket = async (productId: string, quantity: number) => {
     );
     return response.data;
   } catch (e) {
-    console.log(e);
     return false;
   }
 };

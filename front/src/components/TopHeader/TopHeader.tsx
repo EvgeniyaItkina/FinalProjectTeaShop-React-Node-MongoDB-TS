@@ -129,7 +129,6 @@ export function TopHeader() {
                                     onClick = (
                                         e: React.MouseEvent<HTMLAnchorElement, MouseEvent>
                                     ) => {
-                                        console.log("logout");
                                         e.preventDefault();
                                         removeToken();
                                         window.location.href = "/";

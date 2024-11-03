@@ -1,5 +1,6 @@
 import { Schema, model, Document, Types } from "mongoose";
 import Product from "./productModel";
+import { errorLogStream } from "../middlewares/logges/morgan_logger";
 
 export interface IUser extends Document {
   firstName: string;
@@ -91,7 +92,7 @@ export async function findUsersWithProductInBasket(productId: string) {
 
     return users;
   } catch (error) {
-    console.error("Error finding users with the product in basket:", error);
+    errorLogStream.write(`Error removing product from basketItems: ${error}\n`);
   }
 }
 
@@ -104,9 +105,8 @@ export async function removeProductFromBasket(
       { _id: userId },
       { $pull: { basketItems: { product: productId } } }
     );
-    console.log("Product removed from basketItems successfully.");
   } catch (error) {
-    console.error("Error removing product from basketItems:", error);
+    errorLogStream.write(`Error removing product from basketItems:: ${error}\n`);
   }
 }
 
