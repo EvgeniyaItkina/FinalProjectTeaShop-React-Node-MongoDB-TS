@@ -8,7 +8,7 @@ import { createAdmin } from "./tools/createAdmin";
 import adminRoutes from "./routes/adminRoutes";
 import { seedProducts } from "./tools/seedProducts";
 import imagesRoute from "./routes/imagesRoute";
-import { setupLogging } from "./middlewares/logges/morgan_logger";
+import { setupLogging } from "./middlewares/log/morgan_logger";
 const app: Application = express();
 const PORT = process.env.PORT || 5000;
 

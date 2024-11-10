@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { RequestWithDecodedToken } from "./usersMiddleware";
-import { errorLogStream } from "./logges/morgan_logger";
+import { errorLogStream } from "./log/morgan_logger";
 
 export function adminRole(req: Request, res: Response, next: NextFunction) {
   try {

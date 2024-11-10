@@ -1,6 +1,6 @@
 import { Schema, model, Document, Types } from "mongoose";
 import Product from "./productModel";
-import { errorLogStream } from "../middlewares/logges/morgan_logger";
+import { errorLogStream } from "../middlewares/log/morgan_logger";
 
 export interface IUser extends Document {
   firstName: string;
