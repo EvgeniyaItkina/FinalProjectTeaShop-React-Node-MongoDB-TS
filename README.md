@@ -65,20 +65,25 @@
 4. **Launch the application**:
    - **Backend**:
 
-    ```bash
-    cd server
-    docker compose up -d
-    npm run dev
-    ```
+        ```bash
+        cd server
+        docker compose up -d
+        npm run dev
+        ```
+
+        Backend is running on <http://127.0.0.1:2024>  
+        Mongo Express (MongoDB Web UI) is running on <http://127.0.0.1:8888>
 
    - **Frontend**:
 
-    Please run these commands in the separate terminal window:
+        Please run these commands in a separate terminal window:
 
-    ```bash
-    cd front
-    npm run dev
-    ```
+        ```bash
+        cd front
+        npm run dev
+        ```
+
+        Frontend is running on <http://127.0.0.1:5173>
 
 ## 🌟 **Core Features**
 
