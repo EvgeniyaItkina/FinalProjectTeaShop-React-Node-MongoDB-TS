@@ -9,14 +9,17 @@ import adminRoutes from "./routes/adminRoutes";
 import { seedProducts } from "./tools/seedProducts";
 import imagesRoute from "./routes/imagesRoute";
 import { setupLogging } from "./middlewares/log/morgan_logger";
+import dotenv from 'dotenv';
 const app: Application = express();
-const PORT = process.env.PORT || 5000;
+const PORT = parseInt(process.env.PORT as string, 10) || 5000;
 
-app.listen(PORT, async () => {
+dotenv.config();
+
+app.listen(PORT, '0.0.0.0', async () => {
   await connectMongoose();
   await createAdmin();
   await seedProducts();
-  console.log(`Example app listening on port ${PORT}`);
+  console.log(`Server is running on http://0.0.0.0:${PORT}`);
 });
 
 // morgan
